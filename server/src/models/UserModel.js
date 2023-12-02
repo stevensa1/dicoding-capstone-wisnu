@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 
 const UserSchema = mongoose.Schema(
     {
+        profilePictureAddress: {
+            type: String,
+            required: true,
+            // default: '/images/default-profile-picture.png',
+        },
         emailAddress: {
             type: String,
             required: true,
