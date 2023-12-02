@@ -1,6 +1,7 @@
 import React from 'react';
 import Sidebar from '../../components/Sidebar';
 import NavigationBar from '../../components/NavigationBar';
+import CustomBox from '../../components/CustomBox';
 
 function Dashboard() {
     const siteStats = [
@@ -56,14 +57,11 @@ function Dashboard() {
                                 ))}
                             </div>
                         </div>
-                        <div class='self-stretch p-6 bg-white rounded-[20px] flex-col justify-start items-start gap-2.5 flex'>
-                            <div class='text-black text-2xl font-semibold font-poppins'>
-                                Diagram Kunjungan Vs. Tiket Terjual
-                            </div>
-                            <div class='self-stretch justify-between items-end inline-flex'>
+                        <CustomBox title='Diagram Kunjungan Situs Wisata'>
+                            <div className='flex w-full justify-between items-end'>
                                 <div class='flex-col justify-center items-center gap-2.5 inline-flex'>
                                     <div class='justify-start items-end inline-flex'>
-                                        <div class='h-[140px] bg-red-400'></div>
+                                        <div class='w-[43px] h-[140px] bg-red-400'></div>
                                         <div class='w-[43px] h-[92px] bg-red-600'></div>
                                     </div>
                                     <div class='flex-col justify-center items-center flex'>
@@ -105,7 +103,7 @@ function Dashboard() {
                                 </div>
                                 <div class='flex-col justify-center items-center gap-2.5 inline-flex'>
                                     <div class='justify-start items-end inline-flex'>
-                                        <div class='h-[140px] bg-red-400'></div>
+                                        <div class='w-[43px] h-[140px] bg-red-400'></div>
                                         <div class='w-[43px] h-[52px] bg-red-600'></div>
                                     </div>
                                     <div class='flex-col justify-center items-center flex'>
@@ -133,7 +131,7 @@ function Dashboard() {
                                 </div>
                                 <div class='flex-col justify-center items-center gap-2.5 inline-flex'>
                                     <div class='justify-start items-end inline-flex'>
-                                        <div class='h-[140px] bg-red-400'></div>
+                                        <div class='w-[43px] h-[140px] bg-red-400'></div>
                                         <div class='w-[43px] h-[92px] bg-red-600'></div>
                                     </div>
                                     <div class='flex-col justify-center items-center flex'>
@@ -160,7 +158,7 @@ function Dashboard() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </CustomBox>
                         <div class='self-stretch h-[358px] p-[25px] bg-white rounded-[20px] flex-col justify-start items-start gap-2.5 flex'>
                             <div class='text-black text-2xl font-semibold font-poppins'>
                                 Pembeli Tiket Terbaru
