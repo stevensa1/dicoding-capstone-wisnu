@@ -1,10 +1,11 @@
 import React from 'react';
 import { navigationList } from '../data/navItem';
+import { Link } from 'react-router-dom';
 
 function Sidebar({ activeMenu = 'Dashboard' }) {
     return (
         <>
-            <div className='flex p-6 h-min-screen flex-col bg-red-orange-950 w-80 gap-5 text-red-orange-200 justify-between'>
+            <div className='hidden md:flex p-6 h-min-screen flex-col bg-red-orange-950 w-80 gap-5 text-red-orange-200 justify-between'>
                 <div className='flex flex-col gap-5'>
                     <div className='text-center text-red-orange-400'>
                         <div className='text-2xl font-bold'>WisNu</div>
@@ -14,8 +15,9 @@ function Sidebar({ activeMenu = 'Dashboard' }) {
                     </div>
                     <div className='flex flex-col gap-4'>
                         {navigationList.map((item, index) => (
-                            <div
+                            <Link
                                 key={index}
+                                to={item.link}
                                 className={`flex cursor-pointer items-center p-4 rounded-lg ${
                                     activeMenu === item.name
                                         ? 'bg-red-orange-100 text-red-orange-950'
@@ -28,7 +30,7 @@ function Sidebar({ activeMenu = 'Dashboard' }) {
                                     </i>
                                 </div>
                                 <div className='ml-4'>{item.name}</div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 </div>

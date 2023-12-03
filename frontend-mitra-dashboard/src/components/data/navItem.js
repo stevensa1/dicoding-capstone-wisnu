@@ -7,31 +7,31 @@ export const navigationList = [
     {
         name: 'Kelola Situs Wisata',
         icon: '[]',
-        link: '/',
+        link: '/manage/destination',
     },
     {
         name: 'Kelola Tiket',
         icon: '[]',
-        link: '/',
+        link: '/manage/ticket',
     },
     {
         name: 'Kelola Ulasan',
         icon: '[]',
-        link: '/',
+        link: '/manage/feedback',
     },
     {
         name: 'Pesan dan Notifikasi',
         icon: '[]',
-        link: '/',
+        link: '/notifications',
     },
     {
         name: 'Analitika dan Statistika',
         icon: '[]',
-        link: '/',
+        link: '/statistics',
     },
     {
         name: 'Atur Akses Mitra',
         icon: '[]',
-        link: '/',
+        link: '/manage/access',
     },
 ];
