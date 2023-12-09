@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background-color: rgb(243 244 246);
+}
+
+.transition-all {
+    transition-property: all;
+    transition-duration: 300ms;
+}
