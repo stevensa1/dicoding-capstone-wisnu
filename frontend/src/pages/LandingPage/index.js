@@ -39,14 +39,15 @@ function LandingHomePage() {
                     >
                         Permudah, Percepat, dan Perluas Akses Wisata Nusantara
                     </p>
-                    <div>
-                        <button
+                    <div className="pt-4">
+                        <a
+                            href="/home"
                             data-aos="fade-up"
                             data-aos-delay="100"
-                            className="rounded-sm bg-red-orange-600 px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950"
+                            className="rounded-sm bg-red-orange-600 px-4 py-2 text-white transition duration-300 hover:bg-red-orange-950"
                         >
                             Jelajah Nusantara
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div className="flex flex-col gap-4 bg-white px-8 py-8 md:px-16">
@@ -537,13 +538,14 @@ function LandingHomePage() {
                     <h1 className="text-4xl font-bold">
                         Tunggu Apalagi? Mari Menjelajah Nusantara bersama WisNu!
                     </h1>
-                    <button
+                    <a
+                        href="/home"
                         data-aos="fade-up"
                         data-aos-delay="100"
-                        className="rounded-sm bg-red-orange-600 px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950"
+                        className="rounded-sm bg-red-orange-600 px-4 py-2 text-white transition duration-300 hover:bg-red-orange-950"
                     >
                         Jelajah Nusantara
-                    </button>
+                    </a>
                 </div>
             </div>
             <div className="flex flex-col">

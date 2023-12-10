@@ -1,11 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 function ApplicationNavigationBar() {
+    const navigate = useNavigate();
+
+    const [searchForm, setSearchForm] = useState("");
+
+    const handleFormChange = (e) => {
+        setSearchForm(e.target.value);
+        console.log(searchForm);
+    };
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        // alert(`WisNu System: Search result for ${searchForm}.`);
+        navigate(`/search/${searchForm}`);
+    };
+
     return (
         <>
             <div className="flex items-center justify-between gap-2 bg-red-orange-600 px-6 py-2 text-white shadow-md transition-all duration-300 md:gap-5 md:px-8">
                 <h1 className="hidden text-lg md:flex">
-                    <h1 className="flex text-2xl font-bold">WisNu</h1>
+                    <Link
+                        to="/home"
+                        className="flex text-2xl font-bold transition duration-300 hover:text-red-orange-200"
+                    >
+                        WisNu
+                    </Link>
                 </h1>
                 <button
                     onClick={() => {
@@ -56,17 +77,14 @@ function ApplicationNavigationBar() {
                             </svg>
                             <form
                                 className="flex w-full"
-                                onSubmit={() =>
-                                    alert(
-                                        "WisNu System: Search is not functioning yet.",
-                                    )
-                                }
+                                onSubmit={handleFormSubmit}
                             >
                                 <input
                                     name="search"
                                     className="w-full rounded-md border-red-orange-600 bg-transparent px-2 text-black outline-0 ring-inset focus:outline-none focus:ring-0"
                                     type="text"
                                     placeholder="Cari destinasi wisata di Nusantara"
+                                    onChange={handleFormChange}
                                 />
                                 <button
                                     type="submit"

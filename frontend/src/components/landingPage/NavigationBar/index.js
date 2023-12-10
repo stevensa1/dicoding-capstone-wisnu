@@ -59,9 +59,12 @@ function NavigationBar({ activeMenu = "Beranda" }) {
                     ))}
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="rounded-sm bg-red-orange-600 px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950">
+                    <Link
+                        to="/home"
+                        className="rounded-sm bg-red-orange-600 px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950"
+                    >
                         Jelajah Nusantara
-                    </button>
+                    </Link>
                     <div className="cursor-pointer text-2xl md:hidden">
                         &#9776;
                     </div>
