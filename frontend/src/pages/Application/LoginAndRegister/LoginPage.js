@@ -9,8 +9,8 @@ import BlackLockLogoSVG from "../../../components/SVGs/BlackLockLogoSVG";
 function ApplicationLoginPage() {
     return (
         <>
-            <div className="bg-gray flex h-screen items-center justify-center p-4 md:h-full md:bg-red-orange-600 md:p-0">
-                <div className="flex flex-col gap-8 rounded-lg bg-white p-8 shadow-md md:p-12 md:shadow-none">
+            <div className="bg-gray flex h-full items-center justify-center p-4 md:h-full md:items-start md:bg-red-orange-600 md:p-0">
+                <div className="flex flex-col gap-8 rounded-lg bg-white p-8 shadow-md md:max-h-full md:min-h-screen md:p-12 md:shadow-none">
                     <div>
                         <h1 className="text-3xl font-bold">Masuk ke WisNu</h1>
                         <p className="text-gray">
@@ -101,14 +101,11 @@ function ApplicationLoginPage() {
                         </div>
                     </div>
                 </div>
-                <div className="hidden min-h-full w-full object-fill md:flex">
-                    <div className="hidden h-full flex-1 md:block">
-                        <img
-                            src="images/landing-bg.jpg"
-                            alt="Landing"
-                            className="h-full object-cover"
-                        />
-                    </div>
+                <div className="hidden h-screen w-full justify-center gap-4 p-12 text-white md:flex md:flex-col">
+                    <h1 className="text-7xl font-bold">
+                        Selamat datang kembali di WisNu: Wisata Nusantara!
+                    </h1>
+                    <p className="text-2xl">Silahkan masuk untuk lanjut.</p>
                 </div>
             </div>
         </>

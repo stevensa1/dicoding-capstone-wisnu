@@ -107,12 +107,15 @@ function ApplicationNavigationBar() {
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="rounded-md border px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950">
+                    <button className="hidden rounded-md border px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950 md:flex">
                         Daftar
                     </button>
-                    <button className="hidden rounded-md border px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950 md:flex">
+                    <a
+                        href="/login"
+                        className="flex rounded-md border px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950"
+                    >
                         Masuk
-                    </button>
+                    </a>
                 </div>
             </div>
         </>

@@ -7,18 +7,66 @@ const UserSchema = mongoose.Schema(
             required: true,
             // default: '/images/default-profile-picture.png',
         },
+        firstName: {
+            type: String,
+            required: true,
+        },
+        lastName: {
+            type: String,
+            required: false,
+        },
+        fullName: {
+            type: String,
+            required: true,
+        },
+        birthDate: {
+            type: Date,
+            required: true,
+        },
+        userName: {
+            type: String,
+            required: true,
+            unique: true,
+        },
         emailAddress: {
             type: String,
             required: true,
             unique: true,
+            lowercase: true,
+            trim: true,
+        },
+        phoneNumber: {
+            type: String,
+            required: true,
+        },
+        address: {
+            type: String,
+            required: true,
+        },
+        city: {
+            type: String,
+            required: true,
+        },
+        province: {
+            type: String,
+            required: true,
+        },
+        country: {
+            type: String,
+            required: true,
+        },
+        postalCode: {
+            type: String,
+            required: true,
         },
         passwordHashEncrypted: {
             type: String,
             required: true,
             minlength: 8,
         },
-        phoneNumber: {
-            type: String,
+        lastLoggedIn: {
+            type: Date,
+            default: Date.now,
             required: true,
         },
     },
