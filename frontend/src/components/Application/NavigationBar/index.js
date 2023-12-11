@@ -8,7 +8,7 @@ function ApplicationNavigationBar() {
 
     const handleFormChange = (e) => {
         setSearchForm(e.target.value);
-        console.log(searchForm);
+        // console.log(searchForm);
     };
 
     const handleFormSubmit = (e) => {
@@ -107,9 +107,12 @@ function ApplicationNavigationBar() {
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="hidden rounded-md border px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950 md:flex">
+                    <a
+                        href="/register"
+                        className="hidden rounded-md border px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950 md:flex"
+                    >
                         Daftar
-                    </button>
+                    </a>
                     <a
                         href="/login"
                         className="flex rounded-md border px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950"

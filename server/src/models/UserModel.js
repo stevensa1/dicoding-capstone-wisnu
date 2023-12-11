@@ -5,7 +5,7 @@ const UserSchema = mongoose.Schema(
         profilePictureAddress: {
             type: String,
             required: true,
-            // default: '/images/default-profile-picture.png',
+            default: '/images/default-profile-picture.png',
         },
         firstName: {
             type: String,
@@ -16,6 +16,10 @@ const UserSchema = mongoose.Schema(
             required: false,
         },
         fullName: {
+            type: String,
+            required: true,
+        },
+        birthPlace: {
             type: String,
             required: true,
         },
@@ -51,15 +55,11 @@ const UserSchema = mongoose.Schema(
             type: String,
             required: true,
         },
-        country: {
-            type: String,
-            required: true,
-        },
         postalCode: {
             type: String,
             required: true,
         },
-        passwordHashEncrypted: {
+        password: {
             type: String,
             required: true,
             minlength: 8,

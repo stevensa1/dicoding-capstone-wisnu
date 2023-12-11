@@ -5,6 +5,7 @@ import ApplicationHome from "./pages/Application/Home";
 import NotFoundPage from "./pages/Application/NotFound";
 import ApplicationSearchQueryResult from "./pages/Application/SearchResult/SearchResult";
 import ApplicationLoginPage from "./pages/Application/LoginAndRegister/LoginPage";
+import ApplicationRegisterPage from "./pages/Application/LoginAndRegister/RegisterPage";
 
 function App() {
     return (
@@ -12,6 +13,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<LandingHomePage />} />
                 <Route path="/login" element={<ApplicationLoginPage />} />
+                <Route path="/register" element={<ApplicationRegisterPage />} />
                 <Route path="/home" element={<ApplicationHome />} />
                 <Route
                     path="/search/:query"

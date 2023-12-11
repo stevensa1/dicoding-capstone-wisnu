@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import GoogleLogoSVG from "../../../components/SVGs/GoogleLogoSVG";
 // import FacebookLogoSVG from "../../../components/SVGs/FacebookLogoSVG";
 import AppleLogoSVG from "../../../components/SVGs/AppleLogoSVG";
@@ -7,6 +7,9 @@ import BlackEmailLogoSVG from "../../../components/SVGs/BlackEmailLogoSVG";
 import BlackLockLogoSVG from "../../../components/SVGs/BlackLockLogoSVG";
 
 function ApplicationLoginPage() {
+    useEffect(() => {
+        document.title = "WisNu - Masuk Akun";
+    }, []);
     return (
         <>
             <div className="bg-gray flex h-full items-center justify-center p-4 md:h-full md:items-start md:bg-red-orange-600 md:p-0">
@@ -93,7 +96,7 @@ function ApplicationLoginPage() {
                         <div className="mx-4">
                             Belum punya akun?{" "}
                             <a
-                                href="/"
+                                href="/register"
                                 className="text-red-orange-600 hover:underline"
                             >
                                 Buat akun
