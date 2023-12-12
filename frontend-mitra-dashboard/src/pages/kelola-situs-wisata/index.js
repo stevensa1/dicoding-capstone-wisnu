@@ -44,6 +44,36 @@ function KelolaSitusWisata() {
         );
     };
 
+    const BoxWithImage = ({ title, imageUrl }) => {
+        return (
+          <div className="flex p-4 border">
+            {/* Bagian Kiri (Judul) */}
+            <div className="flex-shrink-0">
+              <h2 className="text-lg font-bold">{title}</h2>
+            </div>
+      
+            {/* Bagian Kanan (Gambar) */}
+            <div className="ml-4">
+              <img src={imageUrl} alt="Gambar" className="w-16 h-16 object-cover" />
+            </div>
+          </div>
+        );
+      };
+      
+    const BoxLinks = () => {
+        return (
+          <div className="text-red-500 hover:text-red-700 p-4">
+            <a href="#" className="text-red-500 hover:text-red-700 block mb-2">Register Situs Wisata</a>
+            <a href="#" className="text-red-500 hover:text-red-700 block mb-2">Atur Status Situs Wisata</a>
+            <a href="#" className="text-red-500 hover:text-red-700 block mb-2">Kelola Tiket Situs Wisata</a>
+            <a href="#" className="text-red-500 hover:text-red-700 block mb-2">Kelola Kode Promo</a>
+            <a href="#" className="text-red-500 hover:text-red-700 block mb-2">Push Notifikasi Wisata</a>
+            <a href="#" className="text-red-500 hover:text-red-700 block mb-2">Push Notifikasi Pembeli</a>
+            <a href="#" className="text-red-500 hover:text-red-700 block mb-2">Hapus Situs Wisata</a>
+          </div>
+        );
+      };
+      
     return (
         <>
             <div className='flex h-full '>
@@ -63,15 +93,15 @@ function KelolaSitusWisata() {
                                 ))}
                             </div>
                         </div>
-                        <div class='flex gap-5'>
-                            <div>
+                        <div class='flex gap-5 w-full h-28 md:h-32 p-4 rounded-xl justify-between items-start'>
+                            <div class='w-2/3 w-full' >
                                 <CustomBox title='Daftar Situs Wisata'>
                                         
                                 </CustomBox>    
-                            </div>
-                            <div>
+                            </div >
+                            <div class='w-1/3 font-poppins font-light'>
                                 <CustomBox title='Kelola Wisata'>
-                                        
+                                    <BoxLinks />
                                 </CustomBox>
 
                             </div>
