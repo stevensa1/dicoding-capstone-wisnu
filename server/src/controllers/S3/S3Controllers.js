@@ -7,12 +7,10 @@ export const getPresignedURL = async (filename) => {
         Bucket: process.env.R2_BUCKET_NAME,
         Key: filename,
         Expires: 1800,
-        ContentType: 'application/octet-stream',
     };
     const bucketContent = {
         Bucket: params.Bucket,
         Key: params.Key,
-        ContentType: params.ContentType,
     };
 
     try {
@@ -38,4 +36,37 @@ export const getPresignedURLRequest = async (req, res) => {
     } catch (e) {
         res.status(500).json({ message: e.message });
     }
+};
+
+export const generatePresignedURL = async (req, res) => {
+    const { fileName } = req.query;
+    const key = fileName;
+
+    getSignedUrl(
+        S3,
+        new PutObjectCommand({
+            Bucket: process.env.R2_BUCKET_NAME,
+            Key: key,
+        }),
+        {
+            expiresIn: 3600,
+        }
+    )
+        .then((r) =>
+            res.status(200).json({
+                error: false,
+                data: {
+                    url: r,
+                    photoURI: key,
+                },
+            })
+        )
+        .catch((e) => {
+            console.log(e);
+            res.status(500).json({
+                error: true,
+                message:
+                    'Gagal meminta upload file, silahkan coba beberapa saat lagi.',
+            });
+        });
 };

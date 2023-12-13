@@ -83,19 +83,122 @@ function ApplicationRegisterPage() {
     const validateEmail = (e) => {
         e.preventDefault();
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const isValidEmail = emailRegex.test(registerFormData.emailAddress);
+        const emailAddress = registerFormData.emailAddress;
+        const isValidEmail = emailRegex.test(emailAddress);
         if (!isValidEmail) {
             return alert("Email address is not valid!");
         } else {
-            setStep(2);
-            return alert(
-                `${registerFormData.emailAddress} is valid email address!`,
-            );
+            axios
+                .post(`${process.env.REACT_APP_BACKEND_HOST}/email`, {
+                    emailAddress,
+                })
+                .then((res) => {
+                    if (res.status === 200) {
+                        setStep(2);
+                        return alert(
+                            `${registerFormData.emailAddress} is valid email address and available!`,
+                        );
+                    }
+                })
+                .catch((e) => {
+                    if (e.response.status === 409) {
+                        return alert(
+                            `${registerFormData.emailAddress} is valid email address but already registered!`,
+                        );
+                    }
+                    if (e.response.status === 400) {
+                        return alert(
+                            `${registerFormData.emailAddress} is invalid email address!`,
+                        );
+                    }
+                    alert(
+                        "Terjadi kesalahan pada sistem. Silahkan hubungi admin.",
+                    );
+                    // throw new Error(e);
+                });
         }
     };
 
     const handleProfilePictureChange = (e) => {
         setProfileImage(e.target.files[0]);
+    };
+
+    const handleRegistration = (e) => {
+        e.preventDefault();
+        // Process profile picture upload
+        const fileKey = profileImage.name;
+        axios
+            .get(
+                `${process.env.REACT_APP_BACKEND_HOST}/presigned-url?filename=${fileKey}`,
+            )
+            .then((res) => {
+                const presignedUrl = res.data.presignedUrl;
+                console.log(presignedUrl);
+                axios
+                    .put(
+                        presignedUrl,
+                        { data: profileImage },
+                        {
+                            headers: {
+                                "Content-Type": profileImage.type,
+                            },
+                        },
+                    )
+                    .then((res) => {
+                        console.log(res);
+                        setRegisterFormData({
+                            ...registerFormData,
+                            profilePictureAddress: `https://${process.env.R2_BUCKET_NAME}.s3.${process.env.R2_REGION}.amazonaws.com/${fileKey}`,
+                        });
+                        // Process registration
+                        axios
+                            .post(
+                                `${process.env.REACT_APP_BACKEND_HOST}/register`,
+                                {
+                                    firstName: registerFormData.firstName,
+                                    lastName: registerFormData.lastName,
+                                    birthPlace: registerFormData.birthPlace,
+                                    birthDate: registerFormData.birthDate,
+                                    userName: registerFormData.userName,
+                                    emailAddress: registerFormData.emailAddress,
+                                    phoneNumber: registerFormData.phoneNumber,
+                                    address: registerFormData.address,
+                                    city: registerFormData.city,
+                                    province: registerFormData.province,
+                                    postalCode: registerFormData.postalCode,
+                                    password: registerFormData.password,
+                                    profilePictureAddress:
+                                        registerFormData.profilePictureAddress,
+                                },
+                            )
+                            .then((res) => {
+                                if (res.status === 201) {
+                                    alert(
+                                        "Registrasi berhasil! Silahkan login untuk melanjutkan.",
+                                    );
+                                    // window.location.href = "/login";
+                                }
+                            })
+                            .catch((e) => {
+                                alert(
+                                    "Terjadi kesalahan pada sistem. Silahkan hubungi admin.",
+                                );
+                                throw new Error(e);
+                            });
+                    })
+                    .catch((e) => {
+                        alert(
+                            "Terjadi kesalahan saat upload foto profile. Silahkan hubungi admin.",
+                        );
+                        console.log(e);
+                    });
+            })
+            .catch((e) => {
+                alert(
+                    "Terjadi kesalahan pada presigned URL. Silahkan hubungi admin.",
+                );
+                console.log(e);
+            });
     };
 
     return (
@@ -440,42 +543,6 @@ function ApplicationRegisterPage() {
                                         />
                                     </div>
                                 </div>
-                                <div className="flex flex-col gap-2">
-                                    <label
-                                        className="text-sm font-bold text-gray-500"
-                                        htmlFor="password"
-                                    >
-                                        Kata sandi
-                                    </label>
-                                    <div className="flex items-center gap-2 rounded-md border px-4 py-2">
-                                        <input
-                                            required
-                                            className="w-full border-0 outline-none"
-                                            name="password"
-                                            type="password"
-                                            placeholder="Buat kata sandi"
-                                            onChange={handleFormChange}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <label
-                                        className="text-sm font-bold text-gray-500"
-                                        htmlFor="confirmPassword"
-                                    >
-                                        Konfirmasi Kata sandi
-                                    </label>
-                                    <div className="flex items-center gap-2 rounded-md border px-4 py-2">
-                                        <input
-                                            required
-                                            className="w-full border-0 outline-none"
-                                            name="confirmPassword"
-                                            type="password"
-                                            placeholder="Buat kata sandi"
-                                            onChange={handleFormChange}
-                                        />
-                                    </div>
-                                </div>
 
                                 <button
                                     type="submit"
@@ -524,7 +591,7 @@ function ApplicationRegisterPage() {
                                     {/* Add other fields as needed */}
                                 </div>
                                 <form
-                                    onSubmit={() => alert("Account created!")}
+                                    onSubmit={handleRegistration}
                                     className="flex flex-col gap-4"
                                 >
                                     <div className="flex flex-col gap-2">

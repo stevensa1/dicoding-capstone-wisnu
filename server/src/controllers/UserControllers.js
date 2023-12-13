@@ -2,6 +2,33 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import UserSchema from '../models/UserModel.js';
 
+export const checkEmail = async (req, res) => {
+    const { emailAddress } = req.body;
+    try {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailAddress)) {
+            return res.status(400).json({
+                message: 'Alamat email tidak valid.',
+            });
+        }
+        const isEmailExist = await UserSchema.findOne({
+            emailAddress,
+        });
+        if (isEmailExist) {
+            return res.status(409).json({
+                message: 'Alamat email sudah terdaftar.',
+            });
+        }
+        res.status(200).json({
+            message: 'Alamat email tersedia.',
+        });
+    } catch (e) {
+        res.status(500).json({
+            message: e.message,
+        });
+    }
+};
+
 export const registerUser = async (req, res) => {
     const {
         firstName,
