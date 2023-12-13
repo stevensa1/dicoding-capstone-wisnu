@@ -6,6 +6,6 @@ import {
 
 const router = express.Router();
 
-router.get('/presigned-url', generatePresignedURL);
+router.get('/presigned-url', getPresignedURLRequest);
 
 export default router;

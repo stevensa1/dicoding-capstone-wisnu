@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
-import { S3Client } from '@aws-sdk/client-s3';
+import { S3Client, PutBucketCorsCommand } from '@aws-sdk/client-s3';
 import mongoose from 'mongoose';
 
 import S3Routes from './routes/S3Routes.js';
@@ -36,6 +36,26 @@ export const S3 = new S3Client({
         secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
     },
 });
+
+const addCors = S3.send(
+    new PutBucketCorsCommand({
+        Bucket: process.env.R2_BUCKET_NAME,
+        CORSConfiguration: {
+            CORSRules: new Array({
+                AllowedHeaders: ['content-type'],
+                AllowedMethods: ['GET', 'PUT', 'POST', 'DELETE'],
+                AllowedOrigins: ['*'],
+                ExposeHeaders: [],
+                MaxAgeSeconds: 3000,
+            }),
+        },
+    })
+)
+    .then((r) => console.log('[S3] CORS configuration added successfully'))
+    .catch((e) =>
+        console.error('[S3] CORS configuration failed to add: ' + e + '.')
+    );
+
 const port = process.env.PORT || 4000;
 
 // ROUTES

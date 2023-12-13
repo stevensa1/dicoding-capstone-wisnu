@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import Cookie from "js-cookie";
 
 function ApplicationNavigationBar() {
     const navigate = useNavigate();
-
     const [searchForm, setSearchForm] = useState("");
+    const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+    const [userData, setUserData] = useState({
+        fullName: "",
+        profilePictureAddress: "/images/default-profile-picture.png",
+    });
 
     const handleFormChange = (e) => {
         setSearchForm(e.target.value);
@@ -16,6 +22,30 @@ function ApplicationNavigationBar() {
         // alert(`WisNu System: Search result for ${searchForm}.`);
         navigate(`/search/${searchForm}`);
     };
+
+    useEffect(() => {
+        const sessionToken = Cookie.get("sessionToken");
+        if (sessionToken) {
+            axios
+                .get(`${process.env.REACT_APP_BACKEND_HOST}/api/user`, {
+                    headers: {
+                        Authorization: `Bearer ${sessionToken}`,
+                    },
+                })
+                .then((res) => {
+                    if (res.status === 200) {
+                        setUserData({
+                            fullName: res.data.user.fullName,
+                            profilePictureAddress:
+                                res.data.user.profilePictureAddress,
+                        });
+                        setIsUserLoggedIn(true);
+                    }
+                });
+        } else {
+            alert("WisNu System: You are not logged in.");
+        }
+    }, []);
 
     return (
         <>
@@ -107,18 +137,40 @@ function ApplicationNavigationBar() {
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
-                    <a
-                        href="/register"
-                        className="hidden rounded-md border px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950 md:flex"
-                    >
-                        Daftar
-                    </a>
-                    <a
-                        href="/login"
-                        className="flex rounded-md border px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950"
-                    >
-                        Masuk
-                    </a>
+                    {isUserLoggedIn ? (
+                        <div className="flex items-center gap-2">
+                            <Link
+                                to="/profile"
+                                className="flex items-center gap-2"
+                            >
+                                <span className="hidden text-right text-sm md:flex">
+                                    {userData.fullName}
+                                </span>
+                                <div className="flex aspect-square items-center justify-center justify-center overflow-hidden rounded-full">
+                                    <img
+                                        className="h-12 w-12 rounded-full object-cover object-center"
+                                        src={`https://${process.env.REACT_APP_BUCKET_URL}${userData.profilePictureAddress}`}
+                                        alt=""
+                                    />
+                                </div>
+                            </Link>
+                        </div>
+                    ) : (
+                        <>
+                            <a
+                                href="/register"
+                                className="hidden rounded-md border px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950 md:flex"
+                            >
+                                Daftar
+                            </a>
+                            <a
+                                href="/login"
+                                className="flex rounded-md border px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950"
+                            >
+                                Masuk
+                            </a>
+                        </>
+                    )}
                 </div>
             </div>
         </>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 import GoogleLogoSVG from "../../../components/SVGs/GoogleLogoSVG";
 import AppleLogoSVG from "../../../components/SVGs/AppleLogoSVG";
 import MicrosoftLogoSVG from "../../../components/SVGs/MicrosoftLogoSVG";
@@ -77,7 +78,6 @@ function ApplicationRegisterPage() {
             ...registerFormData,
             [e.target.name]: e.target.value,
         });
-        console.log(registerFormData);
     };
 
     const validateEmail = (e) => {
@@ -89,9 +89,12 @@ function ApplicationRegisterPage() {
             return alert("Email address is not valid!");
         } else {
             axios
-                .post(`${process.env.REACT_APP_BACKEND_HOST}/email`, {
-                    emailAddress,
-                })
+                .post(
+                    `${process.env.REACT_APP_BACKEND_HOST}/api/validation/email`,
+                    {
+                        emailAddress,
+                    },
+                )
                 .then((res) => {
                     if (res.status === 200) {
                         setStep(2);
@@ -120,40 +123,52 @@ function ApplicationRegisterPage() {
     };
 
     const handleProfilePictureChange = (e) => {
-        setProfileImage(e.target.files[0]);
+        const file = e.target.files[0];
+        const MAX_FILE_SIZE = 1024 * 1024 * 10; // 10 MB
+
+        // Check file size
+        if (file.size > MAX_FILE_SIZE) {
+            alert(
+                `File size is too large! Maximum allowed size is ${
+                    MAX_FILE_SIZE / 1024 / 1024
+                } MB.`,
+            );
+            return; // Prevent setting state if size exceeds limit
+        }
+
+        // Set profile image state
+        setProfileImage(file);
     };
 
     const handleRegistration = (e) => {
         e.preventDefault();
         // Process profile picture upload
-        const fileKey = profileImage.name;
+        const fileType = profileImage.type.split("/")[1];
+        const fileKey = `${registerFormData.userName}-${uuidv4()}.${fileType}`;
+        const path = `user/profile-pictures/${fileKey}`;
         axios
             .get(
-                `${process.env.REACT_APP_BACKEND_HOST}/presigned-url?filename=${fileKey}`,
+                `${process.env.REACT_APP_BACKEND_HOST}/presigned-url?filename=${path}`,
             )
             .then((res) => {
                 const presignedUrl = res.data.presignedUrl;
-                console.log(presignedUrl);
                 axios
-                    .put(
-                        presignedUrl,
-                        { data: profileImage },
-                        {
-                            headers: {
-                                "Content-Type": profileImage.type,
-                            },
+                    .put(presignedUrl, profileImage, {
+                        headers: {
+                            "Content-Type": profileImage.type,
                         },
-                    )
+                    })
                     .then((res) => {
                         console.log(res);
                         setRegisterFormData({
                             ...registerFormData,
-                            profilePictureAddress: `https://${process.env.R2_BUCKET_NAME}.s3.${process.env.R2_REGION}.amazonaws.com/${fileKey}`,
+                            profilePictureAddress: `/${path}`,
                         });
+
                         // Process registration
                         axios
                             .post(
-                                `${process.env.REACT_APP_BACKEND_HOST}/register`,
+                                `${process.env.REACT_APP_BACKEND_HOST}/api/register`,
                                 {
                                     firstName: registerFormData.firstName,
                                     lastName: registerFormData.lastName,
@@ -176,7 +191,7 @@ function ApplicationRegisterPage() {
                                     alert(
                                         "Registrasi berhasil! Silahkan login untuk melanjutkan.",
                                     );
-                                    // window.location.href = "/login";
+                                    window.location.href = "/login";
                                 }
                             })
                             .catch((e) => {
