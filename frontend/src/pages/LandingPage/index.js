@@ -18,7 +18,7 @@ function LandingHomePage() {
                     className="flex h-screen flex-col justify-center gap-2 bg-black/50 bg-cover bg-center px-8 py-36 text-white md:px-16 md:pt-48"
                     style={{
                         backgroundImage:
-                            'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/images/landing-bg.jpg")',
+                            'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/images/landing-bg-min.jpg")',
                     }}
                 >
                     <h1
