@@ -7,12 +7,14 @@ import KelolaSitusWisata from './pages/kelola-situs-wisata';
 import KelolaTiket from './pages/kelola-tiket';
 import KelolaUlasan from './pages/kelola-ulasan';
 import PesanDanNotifikasi from './pages/pesan-dan-notifikasi';
+import PengajuanMitra from './pages/pengajuan-mitra';
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<Dashboard />} />
+                <Route path='/request/partner' element={<PengajuanMitra />} />
                 <Route path='/dashboard' element={<Dashboard />} />
                 <Route path='/manage/access' element={<AturAksesMitra />} />
                 <Route
