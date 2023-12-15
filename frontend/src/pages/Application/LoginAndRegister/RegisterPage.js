@@ -13,7 +13,8 @@ function ApplicationRegisterPage() {
 
     const [step, setStep] = useState(1);
     const [registerFormData, setRegisterFormData] = useState({
-        profilePictureAddress: "images/default-profile-picture.png",
+        profilePictureAddress:
+            "/user/profile-pictures/default-profile-picture.png",
         emailAddress: "",
         firstName: "",
         lastName: "",
@@ -165,7 +166,6 @@ function ApplicationRegisterPage() {
                             profilePictureAddress: `/${path}`,
                         });
 
-                        // Process registration
                         axios
                             .post(
                                 `${process.env.REACT_APP_BACKEND_HOST}/api/register`,
@@ -182,8 +182,7 @@ function ApplicationRegisterPage() {
                                     province: registerFormData.province,
                                     postalCode: registerFormData.postalCode,
                                     password: registerFormData.password,
-                                    profilePictureAddress:
-                                        registerFormData.profilePictureAddress,
+                                    profilePictureAddress: `/${path}`,
                                 },
                             )
                             .then((res) => {

@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 
 import S3Routes from './routes/S3Routes.js';
 import UserRoutes from './routes/UserRoutes.js';
+import PartnerRoutes from './routes/PartnerRoutes.js';
 
 const app = express();
 dotenv.config();
@@ -61,6 +62,7 @@ const port = process.env.PORT || 4000;
 // ROUTES
 app.use(S3Routes);
 app.use(UserRoutes);
+app.use(PartnerRoutes);
 
 app.listen(port, () => {
     console.log(`Server running on port 0.0.0.0:${port}`);

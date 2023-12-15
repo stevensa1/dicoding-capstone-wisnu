@@ -157,6 +157,16 @@ export const userLogin = async (req, res) => {
                 expiresIn: '1d',
             }
         );
+        // Update last logged in
+        UserSchema.findOneAndUpdate(
+            {
+                _id: user._id,
+            },
+            {
+                lastLoggedIn: Date.now(),
+            }
+        );
+
         res.cookie('sessionToken', token, {
             httpOnly: true,
             secure: true,
@@ -176,7 +186,6 @@ export const userLogin = async (req, res) => {
 
 export const getSelfUserData = async (req, res) => {
     if (res.locals.user) {
-        console.log(`Request is came from user with ID: ${res.locals.user.id}`);
         try {
             const user = await UserSchema.findOne({
                 _id: res.locals.user.id,
