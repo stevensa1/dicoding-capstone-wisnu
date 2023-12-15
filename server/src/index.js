@@ -4,6 +4,9 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { S3Client, PutBucketCorsCommand } from '@aws-sdk/client-s3';
 import mongoose from 'mongoose';
+import https from 'https';
+import fs from 'fs';
+// import path from 'path';
 
 import S3Routes from './routes/S3Routes.js';
 import UserRoutes from './routes/UserRoutes.js';
@@ -57,13 +60,20 @@ const addCors = S3.send(
         console.error('[S3] CORS configuration failed to add: ' + e + '.')
     );
 
-const port = process.env.PORT || 4000;
+const options = {
+    key: fs.readFileSync('./ssl/private.key'),
+    cert: fs.readFileSync('./ssl/certificate.crt'),
+    ca: fs.readFileSync('./ssl/ca_bundle.crt'),
+};
+const server = https.createServer(options, app);
+
+const port = process.env.PORT || 80;
 
 // ROUTES
 app.use(S3Routes);
 app.use(UserRoutes);
 app.use(PartnerRoutes);
 
-app.listen(port, () => {
-    console.log(`Server running on port 0.0.0.0:${port}`);
+server.listen(port, '0.0.0.0', () => {
+    console.log(`Server running on https://0.0.0.0:${port}`);
 });
