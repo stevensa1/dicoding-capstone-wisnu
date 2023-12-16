@@ -80,10 +80,14 @@ if (process.env.NODE_ENV === 'production') {
         cert: fs.readFileSync('./ssl/certificate.crt'),
         ca: fs.readFileSync('./ssl/ca_bundle.crt'),
     };
-    const server = https.createServer(options, app);
+    try {
+        const server = https.createServer(options, app);
 
-    server.listen(port, '0.0.0.0', () => {
-        console.log(`Server running on secure HTTPS`);
-        console.log(`Server running on https://0.0.0.0:${port}`);
-    });
+        server.listen(port, '0.0.0.0', () => {
+            console.log(`Server running on secure HTTPS`);
+            console.log(`Server running on https://0.0.0.0:${port}`);
+        });
+    } catch (err) {
+        console.error(err);
+    }
 }
