@@ -12,10 +12,6 @@ const DestinationPictureSchema = mongoose.Schema({
 });
 
 const FacilitySchema = mongoose.Schema({
-    facilityIcon: {
-        type: String,
-        required: true,
-    },
     facilityName: {
         type: String,
         required: true,
@@ -33,11 +29,14 @@ const OpenTimeSchema = mongoose.Schema({
     },
     openTimeStart: {
         type: String,
-        required: true,
     },
     openTimeEnd: {
         type: String,
+    },
+    isClosed: {
+        type: Boolean,
         required: true,
+        default: false,
     },
 });
 
@@ -61,6 +60,7 @@ const TicketSchema = mongoose.Schema({
     ticketSold: {
         type: Number,
         required: true,
+        default: 0,
     },
 });
 

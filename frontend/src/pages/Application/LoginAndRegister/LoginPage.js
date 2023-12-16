@@ -14,7 +14,7 @@ function ApplicationLoginPage() {
 
     useEffect(() => {
         const sessionToken = Cookie.get("sessionToken");
-        console.log(sessionToken);
+        // console.log(sessionToken);
     });
 
     const [formData, setFormData] = useState({

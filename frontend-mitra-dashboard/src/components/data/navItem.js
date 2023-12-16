@@ -2,7 +2,7 @@ export const navigationList = [
     {
         name: 'Dashboard',
         icon: '[]',
-        link: '/',
+        link: '/dashboard',
     },
     {
         name: 'Kelola Situs Wisata',

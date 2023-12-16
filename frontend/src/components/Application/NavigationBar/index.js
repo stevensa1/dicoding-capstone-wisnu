@@ -42,8 +42,6 @@ function ApplicationNavigationBar() {
                         setIsUserLoggedIn(true);
                     }
                 });
-        } else {
-            alert("WisNu System: You are not logged in.");
         }
     }, []);
 
@@ -146,7 +144,7 @@ function ApplicationNavigationBar() {
                                 <span className="hidden text-right text-sm md:flex">
                                     {userData.fullName}
                                 </span>
-                                <div className="flex aspect-square items-center justify-center justify-center overflow-hidden rounded-full">
+                                <div className="flex aspect-square items-center justify-center overflow-hidden rounded-full">
                                     <img
                                         className="h-12 w-12 rounded-full object-cover object-center"
                                         src={`https://${process.env.REACT_APP_BUCKET_URL}${userData.profilePictureAddress}`}

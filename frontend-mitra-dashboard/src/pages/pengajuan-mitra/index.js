@@ -170,41 +170,71 @@ function PengajuanMitra() {
                     <h1 className='text-2xl font-bold'>
                         Pengajuan Akun Mitra WisNu
                     </h1>
-                    <div className='flex flex-col md:flex-row w-full justify-center'>
-                        <div className='flex flex-col gap-1 items-center w-full'>
-                            <div className='h-8 w-8 flex items-center justify-center bg-red-orange-300 rounded-full'>
+                    <div className='flex flex-col md:flex-row w-full justify-center gap-1'>
+                        <div
+                            className={`flex md:flex-col gap-1 items-center w-full p-2 rounded-md ${
+                                step === 1 ? 'bg-red-orange-200' : ''
+                            } ${
+                                step < 1 ? 'bg-gray-100' : 'bg-red-orange-100'
+                            }`}
+                        >
+                            <div className='h-6 w-6 text-sm font-semibold flex items-center justify-center bg-red-orange-300 rounded-full'>
                                 1
                             </div>
                             <p className='text-xs font-semibold text-center'>
                                 Pengisian Informasi Pemohon
                             </p>
                         </div>
-                        <div className='flex flex-col gap-1 items-center w-full'>
-                            <div className='h-8 w-8 flex items-center justify-center bg-red-orange-300 rounded-full'>
+                        <div
+                            className={`flex md:flex-col gap-1 items-center w-full p-2 rounded-md ${
+                                step === 2 ? 'bg-red-orange-200' : ''
+                            } ${
+                                step < 2 ? 'bg-gray-100' : 'bg-red-orange-100'
+                            }`}
+                        >
+                            <div className='h-6 w-6 text-sm font-semibold flex items-center justify-center bg-red-orange-300 rounded-full'>
                                 2
                             </div>
                             <p className='text-xs font-semibold text-center'>
                                 Pengisian Informasi Perusahaan
                             </p>
                         </div>
-                        <div className='flex flex-col gap-1 items-center w-full'>
-                            <div className='h-8 w-8 flex items-center justify-center bg-red-orange-300 rounded-full'>
+                        <div
+                            className={`flex md:flex-col gap-1 items-center w-full p-2 rounded-md ${
+                                step === 3 ? 'bg-red-orange-200' : ''
+                            } ${
+                                step < 3 ? 'bg-gray-100' : 'bg-red-orange-100'
+                            }`}
+                        >
+                            <div className='h-6 w-6 text-sm font-semibold flex items-center justify-center bg-red-orange-300 rounded-full'>
                                 3
                             </div>
                             <p className='text-xs font-semibold text-center'>
                                 Buat Kredensial
                             </p>
                         </div>
-                        <div className='flex flex-col gap-1 items-center w-full'>
-                            <div className='h-8 w-8 flex items-center justify-center bg-red-orange-300 rounded-full'>
+                        <div
+                            className={`flex md:flex-col gap-1 items-center w-full p-2 rounded-md ${
+                                step === 4 ? 'bg-red-orange-200' : ''
+                            } ${
+                                step < 4 ? 'bg-gray-100' : 'bg-red-orange-100'
+                            }`}
+                        >
+                            <div className='h-6 w-6 text-sm font-semibold flex items-center justify-center bg-red-orange-300 rounded-full'>
                                 4
                             </div>
                             <p className='text-xs font-semibold text-center'>
                                 Periksa Berkas
                             </p>
                         </div>
-                        <div className='flex flex-col gap-1 items-center w-full'>
-                            <div className='h-8 w-8 flex items-center justify-center bg-red-orange-300 rounded-full'>
+                        <div
+                            className={`flex md:flex-col gap-1 items-center w-full p-2 rounded-md ${
+                                step === 5 ? 'bg-red-orange-200' : ''
+                            } ${
+                                step < 5 ? 'bg-gray-100' : 'bg-red-orange-100'
+                            }`}
+                        >
+                            <div className='h-6 w-6 text-sm font-semibold flex items-center justify-center bg-red-orange-300 rounded-full'>
                                 5
                             </div>
                             <p className='text-xs font-semibold text-center'>

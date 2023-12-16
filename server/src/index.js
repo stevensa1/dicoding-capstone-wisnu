@@ -11,6 +11,7 @@ import fs from 'fs';
 import S3Routes from './routes/S3Routes.js';
 import UserRoutes from './routes/UserRoutes.js';
 import PartnerRoutes from './routes/PartnerRoutes.js';
+import DestinationRoutes from './routes/DestinationRoutes.js';
 
 const app = express();
 dotenv.config();
@@ -60,20 +61,29 @@ const addCors = S3.send(
         console.error('[S3] CORS configuration failed to add: ' + e + '.')
     );
 
-const options = {
-    key: fs.readFileSync('./ssl/private.key'),
-    cert: fs.readFileSync('./ssl/certificate.crt'),
-    ca: fs.readFileSync('./ssl/ca_bundle.crt'),
-};
-const server = https.createServer(options, app);
-
-const port = process.env.PORT || 80;
-
 // ROUTES
 app.use(S3Routes);
 app.use(UserRoutes);
 app.use(PartnerRoutes);
+app.use(DestinationRoutes);
 
-server.listen(port, '0.0.0.0', () => {
-    console.log(`Server running on https://0.0.0.0:${port}`);
-});
+if (process.env.NODE_ENV === 'development') {
+    const port = process.env.PORT;
+    app.listen(port).on('listening', () => {
+        console.log(`Server running on http://localhost:${port}`);
+    });
+}
+if (process.env.NODE_ENV === 'production') {
+    const port = 443;
+    const options = {
+        key: fs.readFileSync('./ssl/private.key'),
+        cert: fs.readFileSync('./ssl/certificate.crt'),
+        ca: fs.readFileSync('./ssl/ca_bundle.crt'),
+    };
+    const server = https.createServer(options, app);
+
+    server.listen(port, '0.0.0.0', () => {
+        console.log(`Server running on secure HTTPS`);
+        console.log(`Server running on https://0.0.0.0:${port}`);
+    });
+}
