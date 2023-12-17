@@ -118,7 +118,7 @@ export const postNewDestination = async (req, res) => {
                 { _id: res.locals.user.id },
                 {
                     $push: {
-                        partnerDestinationList: newDestination._id,
+                        managedDestination: newDestination._id,
                     },
                 }
             );
