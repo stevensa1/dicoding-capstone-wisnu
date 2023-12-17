@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const ReviewSchema = mongoose.Schema({
+const ReviewModel = mongoose.Schema({
     reviewDate: {
         type: Date,
         required: true,
@@ -46,4 +46,4 @@ const ReviewSchema = mongoose.Schema({
     },
 });
 
-export default mongoose.model('Review', ReviewSchema, 'reviews');
+export default mongoose.model('Review', ReviewModel, 'reviews');

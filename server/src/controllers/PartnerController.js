@@ -247,6 +247,7 @@ export const getMinimalPartnerDataById = async (req, res) => {
         );
         const destinationCount = partner.managedDestination.length;
         return res.status(200).json({
+            id: partner._id,
             partnerName: partner.companyName,
             partnerLogo: partner.logoAddress,
             isVerified: partner.isVerified,

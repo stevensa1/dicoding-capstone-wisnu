@@ -1,4 +1,6 @@
 import React from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function LandingPageFooter() {
     return (
@@ -8,13 +10,17 @@ function LandingPageFooter() {
                     <div className="flex flex-col gap-4 md:w-1/4">
                         <div className="flex flex-col gap-2">
                             <h1 className="text-2xl font-bold text-black">
-                                WisataNusantara
+                                WisNu
                             </h1>
-                            <p>
-                                Cras fermentum odio eu feugiat lide par naso
-                                tierra. Justo eget nada terra videa magna derita
-                                valies darta donna mare fermentum iaculis eu non
-                                diam phasellus.
+                            <p className="text-justify">
+                                WisataNusantara atau WisNu adalah platform
+                                perjalanan yang menyediakan informasi dan
+                                pengalaman seru tentang destinasi wisata di
+                                seluruh Indonesia. Temukan keindahan alam,
+                                warisan budaya, dan petualangan menarik di
+                                setiap sudut nusantara. Jadikan setiap
+                                perjalanan Anda tak terlupakan dengan panduan
+                                lengkap dari WisataNusantara.
                             </p>
                         </div>
                         <div className="flex gap-2 md:gap-4">
@@ -30,21 +36,44 @@ function LandingPageFooter() {
                                 Link Cepat
                             </h2>
                             <div className="flex flex-col gap-1">
-                                <p className="cursor-pointer transition duration-150 hover:text-red-orange-800">
+                                <a
+                                    href="/home"
+                                    className="cursor-pointer text-left transition duration-150 hover:text-red-orange-800"
+                                >
                                     Beranda
-                                </p>
-                                <p className="cursor-pointer transition duration-150 hover:text-red-orange-800">
+                                </a>
+                                <button
+                                    onClick={() => {
+                                        toast.error("Halaman belum tersedia.");
+                                    }}
+                                    className="cursor-pointer text-left transition duration-150 hover:text-red-orange-800"
+                                >
                                     Tentang kami
-                                </p>
-                                <p className="cursor-pointer transition duration-150 hover:text-red-orange-800">
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        toast.error("Halaman belum tersedia.");
+                                    }}
+                                    className="cursor-pointer text-left transition duration-150 hover:text-red-orange-800"
+                                >
                                     Mitra kami
-                                </p>
-                                <p className="cursor-pointer transition duration-150 hover:text-red-orange-800">
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        toast.error("Halaman belum tersedia.");
+                                    }}
+                                    className="cursor-pointer text-left transition duration-150 hover:text-red-orange-800"
+                                >
                                     Tim kami
-                                </p>
-                                <p className="cursor-pointer transition duration-150 hover:text-red-orange-800">
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        toast.error("Halaman belum tersedia.");
+                                    }}
+                                    className="cursor-pointer text-left transition duration-150 hover:text-red-orange-800"
+                                >
                                     Kontak kami
-                                </p>
+                                </button>
                             </div>
                         </div>
                         <div className="flex w-36 flex-col gap-2">
@@ -52,15 +81,32 @@ function LandingPageFooter() {
                                 Layanan Kami
                             </h2>
                             <div className="flex flex-col gap-1">
-                                <p className="cursor-pointer transition duration-150 hover:text-red-orange-800">
+                                <a
+                                    href="/"
+                                    className="cursor-pointer text-left transition duration-150 hover:text-red-orange-800"
+                                >
                                     Jelajah Nusantara
-                                </p>
-                                <p className="cursor-pointer transition duration-150 hover:text-red-orange-800">
+                                </a>
+                                <a
+                                    href="/eksplorasi"
+                                    className="cursor-pointer text-left transition duration-150 hover:text-red-orange-800"
+                                >
                                     Beli tiket
-                                </p>
-                                <p className="cursor-pointer transition duration-150 hover:text-red-orange-800">
+                                </a>
+                                <button
+                                    onClick={() => {
+                                        toast.error("Fitur belum tersedia");
+                                    }}
+                                    className="cursor-pointer text-left transition duration-150 hover:text-red-orange-800"
+                                >
                                     Komunitas WisNu
-                                </p>
+                                </button>
+                                <a
+                                    href="https://partner.wisnu.store/login"
+                                    className="cursor-pointer text-left transition duration-150 hover:text-red-orange-800"
+                                >
+                                    Manajemen Mitra
+                                </a>
                             </div>
                         </div>
                     </div>

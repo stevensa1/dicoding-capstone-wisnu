@@ -1,6 +1,8 @@
 import PartnerSchema from '../models/PartnerModel.js';
 import DestinationModel from '../models/DestinationModel.js';
 import PurchasedTicketSchema from '../models/PurchasedTicketModel.js';
+import ReviewModel from '../models/ReviewModel.js';
+import UserSchema from '../models/UserModel.js';
 
 // TODO
 // Get all destination with minimal information for boxs
@@ -271,5 +273,198 @@ export const getSelfTickets = async (req, res) => {
         return res.status(401).json({
             message: 'Unauthorized access.',
         });
+    }
+};
+
+// Function to calculate average rating for a partner
+const updateAverageRating = async (partnerId) => {
+    try {
+        const reviews = await ReviewModel.find({
+            reviewPartnerId: partnerId,
+        });
+
+        if (reviews.length > 0) {
+            // Calculate average rating
+            const totalRating = reviews.reduce(
+                (sum, review) => sum + review.reviewRating,
+                0
+            );
+            const averageRating = totalRating / reviews.length;
+
+            // Update the averageRating field in the PartnerSchema
+            await PartnerSchema.updateOne(
+                { _id: partnerId },
+                { averageRating }
+            );
+        } else {
+            // No reviews, set averageRating to 0
+            await PartnerSchema.updateOne(
+                { _id: partnerId },
+                { averageRating: 0 }
+            );
+        }
+    } catch (error) {
+        console.error('Error updating averageRating:', error.message);
+    }
+};
+
+// Function to update averageRating for all partners
+export const updateAllAverageRatings = async (req, res) => {
+    try {
+        const partners = await PartnerSchema.find();
+
+        for (const partner of partners) {
+            await updateAverageRating(partner._id);
+        }
+
+        return res.status(200).json({
+            message: 'Average ratings updated successfully for all partners',
+        });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const createReview = async (req, res) => {
+    if (res.locals.user) {
+        const {
+            reviewDestinationId,
+            reviewRating,
+            reviewComment,
+            reviewPartnerId,
+        } = req.body;
+
+        try {
+            // Check if the user has already reviewed the destination
+            const existingReview = await ReviewModel.findOne({
+                reviewDestinationId: reviewDestinationId,
+                reviewUserId: res.locals.user.id,
+            });
+
+            if (existingReview) {
+                return res.status(400).json({
+                    message: 'User has already reviewed this destination',
+                });
+            }
+            // Fetch user name
+            const user = await UserSchema.findOne({
+                _id: res.locals.user.id,
+            });
+
+            const partner = await PartnerSchema.findOne({
+                _id: reviewPartnerId,
+            });
+
+            // Create a new review
+            const newReview = await ReviewModel.create({
+                reviewDestinationId: reviewDestinationId,
+                reviewRating: reviewRating,
+                reviewComment: reviewComment,
+                reviewUserId: user._id,
+                reviewPartnerId: partner._id,
+                reviewUser: user.fullName,
+                reviewPartner: partner.companyName,
+            });
+
+            // Update the averageRating for the reviewed partner
+            await updateAverageRating(reviewPartnerId);
+
+            return res.status(201).json({
+                message: 'Review created successfully',
+                review: newReview,
+            });
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
+    return res.status(401).json({ message: 'Unauthorized access.' });
+};
+
+export const getMyReviewDestination = async (req, res) => {
+    if (res.locals.user) {
+        const { destinationId } = req.params;
+        try {
+            const review = await ReviewModel.findOne({
+                reviewDestinationId: destinationId,
+                reviewUserId: res.locals.user.id,
+            });
+            if (!review) {
+                return res.status(204).json({
+                    message: 'Review not found for the specified destination',
+                });
+            }
+            return res.status(200).json({
+                review,
+            });
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
+    return res.status(401).json({ message: 'Unauthorized access.' });
+};
+
+export const updateReview = async (req, res) => {
+    if (res.locals.user) {
+        const {
+            reviewDestinationId,
+            reviewRating,
+            reviewComment,
+            reviewUserId,
+            reviewPartnerId,
+            reviewUser,
+            reviewPartner,
+        } = req.body;
+
+        try {
+            // Check if the user has already reviewed the destination
+            const existingReview = await ReviewModel.findOne({
+                reviewDestinationId,
+                reviewUserId,
+            });
+
+            if (!existingReview) {
+                return res.status(404).json({
+                    message:
+                        'Review not found for the specified destination and user',
+                });
+            }
+
+            // Update the existing review
+            existingReview.reviewRating = reviewRating;
+            existingReview.reviewComment = reviewComment;
+            existingReview.reviewPartnerId = reviewPartnerId;
+            existingReview.reviewUser = reviewUser;
+            existingReview.reviewPartner = reviewPartner;
+
+            // Save the updated review
+            await existingReview.save();
+
+            // Update the averageRating for the reviewed partner
+            await updateAverageRating(reviewPartnerId);
+
+            return res.status(200).json({
+                message: 'Review updated successfully',
+                review: existingReview,
+            });
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    } else {
+        return res.status(401).json({ message: 'Unauthorized access.' });
+    }
+};
+
+export const getDestinationReviews = async (req, res) => {
+    const { destinationId } = req.params;
+
+    try {
+        // Fetch reviews for the given destination
+        const reviews = await ReviewModel.find({
+            reviewDestinationId: destinationId,
+        });
+
+        return res.status(200).json({ reviews });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
     }
 };

@@ -184,6 +184,13 @@ export const userLogin = async (req, res) => {
     }
 };
 
+export const userLogout = async (req, res) => {
+    res.clearCookie('sessionToken');
+    res.status(200).json({
+        message: 'Logout berhasil.',
+    });
+};
+
 export const getSelfUserData = async (req, res) => {
     if (res.locals.user) {
         try {

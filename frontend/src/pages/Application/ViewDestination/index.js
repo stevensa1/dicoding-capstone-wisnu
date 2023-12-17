@@ -22,6 +22,7 @@ function DestinationView() {
     const [destinationData, setDestinationData] = useState({});
     const [partnerData, setPartnerData] = useState({});
     const [dataLoaded, setDataLoaded] = useState(false);
+    const [reviewLoad, setReviewLoad] = useState(false);
     const [purchaseTicketModal, setPurchaseTicketModal] = useState(false);
     const [purchaseTicketData, setPurchaseTicketData] = useState({
         ticketName: "",
@@ -33,7 +34,110 @@ function DestinationView() {
         ageHolder: 0,
         ticketDate: new Date(),
     });
+    const [reviews, setReviews] = useState([]);
+    const [myReview, setMyReview] = useState({
+        reviewRating: 0,
+        reviewComment: "",
+        alreadyReviewed: false,
+    });
     const [activeTab, setActiveTab] = useState("description");
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+    useEffect(() => {
+        axios
+            .get(
+                `${process.env.REACT_APP_BACKEND_HOST}/api/review/destination/${destinationId}`,
+            )
+            .then((res) => {
+                setReviews(res.data.reviews);
+                setReviewLoad(true);
+            })
+            .catch((err) => {
+                console.log(err);
+                toast("Terjadi kesalahan saat mengambil ulasan", {
+                    type: "error",
+                });
+            });
+        if (sessionToken) {
+            axios
+                .get(
+                    `${process.env.REACT_APP_BACKEND_HOST}/api/review/my/${destinationId}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${sessionToken}`,
+                        },
+                    },
+                )
+                .then((res) => {
+                    if (res.status === 204) {
+                        setMyReview({
+                            reviewRating: 0,
+                            reviewComment: "",
+                            alreadyReviewed: false,
+                        });
+                    } else {
+                        setMyReview({
+                            reviewRating: res.data.review.reviewRating,
+                            reviewComment: res.data.review.reviewComment,
+                            alreadyReviewed: true,
+                        });
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    setMyReview({
+                        reviewRating: 0,
+                        reviewComment: "",
+                        alreadyReviewed: false,
+                    });
+                    toast("Terjadi kesalahan saat mengambil ulasan", {
+                        type: "error",
+                    });
+                });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [destinationId]);
+
+    const handleReviewSubmission = (e) => {
+        e.preventDefault();
+        if (sessionToken) {
+            axios
+                .post(
+                    `${process.env.REACT_APP_BACKEND_HOST}/api/review/create`,
+                    {
+                        reviewDestinationId: destinationId,
+                        reviewRating: myReview.reviewRating,
+                        reviewComment: myReview.reviewComment,
+                        reviewPartnerId: partnerData.id,
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${sessionToken}`,
+                        },
+                    },
+                )
+                .then(() => {
+                    setMyReview({
+                        ...myReview,
+                        alreadyReviewed: true,
+                    });
+                    toast("Ulasan berhasil dikirim", {
+                        type: "success",
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
+                    toast("Terjadi kesalahan saat mengirim ulasan", {
+                        type: "error",
+                    });
+                });
+        } else {
+            toast("Anda harus login terlebih dahulu untuk memberikan ulasan", {
+                type: "error",
+            });
+        }
+    };
 
     const onTicketFormChange = (e) => {
         setPurchaseTicketData({
@@ -108,7 +212,6 @@ function DestinationView() {
     };
 
     useEffect(() => {
-        window.scrollTo(0, 0);
         axios
             .get(
                 `${process.env.REACT_APP_BACKEND_HOST}/api/destination/${destinationId}`,
@@ -337,11 +440,11 @@ function DestinationView() {
                                     onClick={() =>
                                         handleTabClick("description")
                                     }
-                                    className={`inline-flex w-full items-center justify-center rounded-lg border border-gray-400 px-2 py-1 font-semibold
+                                    className={`inline-flex w-full items-center justify-center rounded-lg border border-gray-400 px-2 py-1 font-semibold transition duration-300 hover:bg-gray-100 
                                         ${
                                             activeTab === "description"
                                                 ? "bg-gray-200 text-gray-800"
-                                                : ""
+                                                : "bg-white"
                                         }
                                     `}
                                 >
@@ -349,11 +452,11 @@ function DestinationView() {
                                 </button>
                                 <button
                                     onClick={() => handleTabClick("history")}
-                                    className={`inline-flex w-full items-center justify-center rounded-lg border border-gray-400 px-2 py-1 font-semibold
+                                    className={`inline-flex w-full items-center justify-center rounded-lg border border-gray-400 px-2 py-1 font-semibold transition duration-300 hover:bg-gray-100 
                                         ${
                                             activeTab === "history"
                                                 ? "bg-gray-200 text-gray-800"
-                                                : ""
+                                                : "bg-white"
                                         }
                                     `}
                                 >
@@ -361,11 +464,11 @@ function DestinationView() {
                                 </button>
                                 <button
                                     onClick={() => handleTabClick("facility")}
-                                    className={`inline-flex w-full items-center justify-center rounded-lg border border-gray-400 px-2 py-1 font-semibold
+                                    className={`inline-flex w-full items-center justify-center rounded-lg border border-gray-400 px-2 py-1 font-semibold transition duration-300 hover:bg-gray-100 
                                         ${
                                             activeTab === "facility"
                                                 ? "bg-gray-200 text-gray-800"
-                                                : ""
+                                                : "bg-white"
                                         }
                                     `}
                                 >
@@ -472,7 +575,7 @@ function DestinationView() {
                                             <>
                                                 <div
                                                     key={index}
-                                                    className="flex flex-col rounded-md border border-gray-300 p-3"
+                                                    className="flex flex-col rounded-md border border-gray-300 bg-white p-3 transition duration-300 ease-out hover:shadow-lg"
                                                 >
                                                     <p className="w-full font-bold">
                                                         {ticket.ticketName}
@@ -562,72 +665,356 @@ function DestinationView() {
                             </div>
                         </div>
                         <hr className="my-2" />
-                        <div className="flex w-full flex-col gap-1">
+                        <div className="flex w-full flex-col gap-4">
                             <h1 className="text-lg font-bold">
                                 Apa Kata Mereka
                             </h1>
-                            <div className="flex w-full flex-col gap-2">
-                                <div className="flex flex-col gap-2 rounded-md border border-gray-300 p-3">
-                                    <div className="flex w-full justify-between">
-                                        <p className=" font-bold">
-                                            Nama Pengguna
-                                        </p>
-                                        <div className="flex items-center gap-1 text-xs text-gray-600">
-                                            <p className="font-bold text-yellow-500">
-                                                &#9733; 9.0
+                            <div className="flex w-full flex-col gap-4">
+                                {reviewLoad ? (
+                                    <>
+                                        {reviews.length > 0 ? (
+                                            <>
+                                                {reviews.map(
+                                                    (review, index) => (
+                                                        <>
+                                                            <div
+                                                                key={index}
+                                                                className="flex flex-col gap-4 rounded-md border border-gray-300 bg-white p-3 transition duration-300 ease-out hover:shadow-lg"
+                                                            >
+                                                                <div className="flex w-full justify-between">
+                                                                    <p className=" font-bold">
+                                                                        {
+                                                                            review.reviewUser
+                                                                        }
+                                                                    </p>
+                                                                    <div className="text-md flex items-center gap-1 text-gray-600">
+                                                                        <p className="font-bold text-yellow-500">
+                                                                            &#9733;
+                                                                            {review.reviewRating.toFixed(
+                                                                                0,
+                                                                            )}
+                                                                        </p>
+                                                                        <span>
+                                                                            /
+                                                                        </span>
+                                                                        <p className="">
+                                                                            10
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                                <p className="text-md w-full text-gray-600">
+                                                                    {
+                                                                        review.reviewComment
+                                                                    }
+                                                                </p>
+                                                            </div>
+                                                        </>
+                                                    ),
+                                                )}
+                                            </>
+                                        ) : (
+                                            <p className="text-md text-gray-600">
+                                                Belum ada ulasan. Jadilah yang
+                                                pertama!
                                             </p>
-                                            <span>/</span>
-                                            <p className="">10</p>
-                                        </div>
-                                    </div>
-                                    <p className="text-md w-full text-gray-600">
-                                        Cras fermentum odio eu feugiat lide par
-                                        naso tierra. Justo eget nada terra videa
-                                        magna derita valies darta donna mare
-                                        fermentum iaculis eu non diam phasellus.
-                                    </p>
-                                </div>
-                                <div className="flex flex-col gap-2 rounded-md border border-gray-300 p-3">
-                                    <div className="flex w-full justify-between">
-                                        <p className=" font-bold">
-                                            Nama Pengguna
-                                        </p>
-                                        <div className="flex items-center gap-1 text-xs text-gray-600">
-                                            <p className="font-bold text-yellow-500">
-                                                &#9733; 9.0
-                                            </p>
-                                            <span>/</span>
-                                            <p className="">10</p>
-                                        </div>
-                                    </div>
-                                    <p className="text-md w-full text-gray-600">
-                                        Cras fermentum odio eu feugiat lide par
-                                        naso tierra. Justo eget nada terra videa
-                                        magna derita valies darta donna mare
-                                        fermentum iaculis eu non diam phasellus.
-                                    </p>
-                                </div>
-                                <div className="flex flex-col gap-2 rounded-md border border-gray-300 p-3">
-                                    <div className="flex w-full justify-between">
-                                        <p className=" font-bold">
-                                            Nama Pengguna
-                                        </p>
-                                        <div className="flex items-center gap-1 text-xs text-gray-600">
-                                            <p className="font-bold text-yellow-500">
-                                                &#9733; 9.0
-                                            </p>
-                                            <span>/</span>
-                                            <p className="">10</p>
-                                        </div>
-                                    </div>
-                                    <p className="text-md w-full text-gray-600">
-                                        Cras fermentum odio eu feugiat lide par
-                                        naso tierra. Justo eget nada terra videa
-                                        magna derita valies darta donna mare
-                                        fermentum iaculis eu non diam phasellus.
-                                    </p>
-                                </div>
+                                        )}
+                                    </>
+                                ) : (
+                                    <>
+                                        <Skeleton count={3} />
+                                    </>
+                                )}
                             </div>
+                            {sessionToken ? (
+                                <>
+                                    {myReview.alreadyReviewed ? (
+                                        <>
+                                            <h1 className="text-lg font-bold">
+                                                Ulasan Anda
+                                            </h1>
+                                            <div className="flex w-full flex-col gap-2">
+                                                <div className="flex flex-col gap-4 rounded-md border border-gray-300 bg-white p-5">
+                                                    <div className="flex w-full justify-between">
+                                                        <p className=" font-bold">
+                                                            Anda
+                                                        </p>
+                                                        <div className="text-md flex items-center gap-1 text-gray-600">
+                                                            <p className="font-bold text-yellow-500">
+                                                                &#9733;{" "}
+                                                                {myReview.reviewRating.toFixed(
+                                                                    0,
+                                                                )}
+                                                            </p>
+                                                            <span>/</span>
+                                                            <p className="">
+                                                                10
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <p className="text-md w-full text-gray-600">
+                                                        {myReview.reviewComment}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <form
+                                                onSubmit={
+                                                    handleReviewSubmission
+                                                }
+                                            >
+                                                <h1 className="text-lg font-bold">
+                                                    Ulasan Anda
+                                                </h1>
+                                                <div className="flex w-full flex-col gap-2">
+                                                    <div className="flex flex-col gap-4 rounded-md border border-gray-300 bg-white p-5">
+                                                        <div className="flex w-full justify-between">
+                                                            <p className=" font-bold">
+                                                                Buat Ulasan Anda
+                                                            </p>
+                                                            <div className="text-md flex items-center gap-1 text-gray-600">
+                                                                <p className="font-bold text-yellow-500">
+                                                                    &#9733;{" "}
+                                                                    {myReview.reviewRating.toFixed(
+                                                                        0,
+                                                                    )}
+                                                                </p>
+                                                                <span>/</span>
+                                                                <p className="">
+                                                                    10
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex justify-between">
+                                                            <button
+                                                                onClick={() => {
+                                                                    setMyReview(
+                                                                        {
+                                                                            ...myReview,
+                                                                            reviewRating: 1,
+                                                                        },
+                                                                    );
+                                                                }}
+                                                                className={`text-xl font-bold md:text-4xl ${
+                                                                    myReview.reviewRating >=
+                                                                    1
+                                                                        ? "text-yellow-500"
+                                                                        : "text-gray-400"
+                                                                } `}
+                                                            >
+                                                                &#9733;
+                                                            </button>
+
+                                                            <button
+                                                                onClick={() => {
+                                                                    setMyReview(
+                                                                        {
+                                                                            ...myReview,
+                                                                            reviewRating: 2,
+                                                                        },
+                                                                    );
+                                                                }}
+                                                                className={`text-xl font-bold md:text-4xl ${
+                                                                    myReview.reviewRating >=
+                                                                    2
+                                                                        ? "text-yellow-500"
+                                                                        : "text-gray-400"
+                                                                } `}
+                                                            >
+                                                                &#9733;
+                                                            </button>
+
+                                                            <button
+                                                                onClick={() => {
+                                                                    setMyReview(
+                                                                        {
+                                                                            ...myReview,
+                                                                            reviewRating: 3,
+                                                                        },
+                                                                    );
+                                                                }}
+                                                                className={`text-xl font-bold md:text-4xl ${
+                                                                    myReview.reviewRating >=
+                                                                    3
+                                                                        ? "text-yellow-500"
+                                                                        : "text-gray-400"
+                                                                } `}
+                                                            >
+                                                                &#9733;
+                                                            </button>
+
+                                                            <button
+                                                                onClick={() => {
+                                                                    setMyReview(
+                                                                        {
+                                                                            ...myReview,
+                                                                            reviewRating: 4,
+                                                                        },
+                                                                    );
+                                                                }}
+                                                                className={`text-xl font-bold md:text-4xl ${
+                                                                    myReview.reviewRating >=
+                                                                    4
+                                                                        ? "text-yellow-500"
+                                                                        : "text-gray-400"
+                                                                } `}
+                                                            >
+                                                                &#9733;
+                                                            </button>
+
+                                                            <button
+                                                                onClick={() => {
+                                                                    setMyReview(
+                                                                        {
+                                                                            ...myReview,
+                                                                            reviewRating: 5,
+                                                                        },
+                                                                    );
+                                                                }}
+                                                                className={`text-xl font-bold md:text-4xl ${
+                                                                    myReview.reviewRating >=
+                                                                    5
+                                                                        ? "text-yellow-500"
+                                                                        : "text-gray-400"
+                                                                } `}
+                                                            >
+                                                                &#9733;
+                                                            </button>
+
+                                                            <button
+                                                                onClick={() => {
+                                                                    setMyReview(
+                                                                        {
+                                                                            ...myReview,
+                                                                            reviewRating: 6,
+                                                                        },
+                                                                    );
+                                                                }}
+                                                                className={`text-xl font-bold md:text-4xl ${
+                                                                    myReview.reviewRating >=
+                                                                    6
+                                                                        ? "text-yellow-500"
+                                                                        : "text-gray-400"
+                                                                } `}
+                                                            >
+                                                                &#9733;
+                                                            </button>
+
+                                                            <button
+                                                                onClick={() => {
+                                                                    setMyReview(
+                                                                        {
+                                                                            ...myReview,
+                                                                            reviewRating: 7,
+                                                                        },
+                                                                    );
+                                                                }}
+                                                                className={`text-xl font-bold md:text-4xl ${
+                                                                    myReview.reviewRating >=
+                                                                    7
+                                                                        ? "text-yellow-500"
+                                                                        : "text-gray-400"
+                                                                } `}
+                                                            >
+                                                                &#9733;
+                                                            </button>
+
+                                                            <button
+                                                                onClick={() => {
+                                                                    setMyReview(
+                                                                        {
+                                                                            ...myReview,
+                                                                            reviewRating: 8,
+                                                                        },
+                                                                    );
+                                                                }}
+                                                                className={`text-xl font-bold md:text-4xl ${
+                                                                    myReview.reviewRating >=
+                                                                    8
+                                                                        ? "text-yellow-500"
+                                                                        : "text-gray-400"
+                                                                } `}
+                                                            >
+                                                                &#9733;
+                                                            </button>
+
+                                                            <button
+                                                                onClick={() => {
+                                                                    setMyReview(
+                                                                        {
+                                                                            ...myReview,
+                                                                            reviewRating: 9,
+                                                                        },
+                                                                    );
+                                                                }}
+                                                                className={`text-xl font-bold md:text-4xl ${
+                                                                    myReview.reviewRating >=
+                                                                    9
+                                                                        ? "text-yellow-500"
+                                                                        : "text-gray-400"
+                                                                } `}
+                                                            >
+                                                                &#9733;
+                                                            </button>
+
+                                                            <button
+                                                                onClick={() => {
+                                                                    setMyReview(
+                                                                        {
+                                                                            ...myReview,
+                                                                            reviewRating: 10,
+                                                                        },
+                                                                    );
+                                                                }}
+                                                                className={`text-xl font-bold md:text-4xl ${
+                                                                    myReview.reviewRating >=
+                                                                    10
+                                                                        ? "text-yellow-500"
+                                                                        : "text-gray-400"
+                                                                } `}
+                                                            >
+                                                                &#9733;
+                                                            </button>
+                                                        </div>
+                                                        <textarea
+                                                            required
+                                                            className="h-24 w-full rounded-md border-0 outline-none"
+                                                            placeholder="Tulis ulasan Anda disini"
+                                                            value={
+                                                                myReview.reviewComment
+                                                            }
+                                                            onChange={(e) => {
+                                                                setMyReview({
+                                                                    ...myReview,
+                                                                    reviewComment:
+                                                                        e.target
+                                                                            .value,
+                                                                });
+                                                            }}
+                                                        ></textarea>
+                                                        <div className="flex w-full justify-end">
+                                                            <button
+                                                                type="submit"
+                                                                className="rounded-md bg-red-orange-600 px-4 py-2 text-white transition duration-300 hover:bg-red-orange-950"
+                                                            >
+                                                                Kirim Ulasan
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </>
+                                    )}
+                                </>
+                            ) : (
+                                <>
+                                    <p className="text-md text-gray-600">
+                                        Anda harus login terlebih dahulu untuk
+                                        memberikan ulasan
+                                    </p>
+                                </>
+                            )}
                         </div>
                         <hr className="my-2" />
                         <div className="flex w-full flex-col gap-1">
@@ -662,7 +1049,7 @@ function DestinationView() {
                                     <p className="font-bold text-yellow-500">
                                         &#9733;{" "}
                                         {dataLoaded ? (
-                                            partnerData.averageRating
+                                            partnerData.averageRating.toFixed(2)
                                         ) : (
                                             <Skeleton />
                                         )}

@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookie from "js-cookie";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 function ApplicationNavigationBar({ home = false }) {
     const navigate = useNavigate();
+    const [menu, toggleMenu] = useState(false);
     const [searchForm, setSearchForm] = useState("");
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
     const [userData, setUserData] = useState({
@@ -23,6 +26,25 @@ function ApplicationNavigationBar({ home = false }) {
         e.preventDefault();
         // alert(`WisNu System: Search result for ${searchForm}.`);
         navigate(`/search/${searchForm}`);
+    };
+
+    const handleLogout = () => {
+        axios
+            .post(`${process.env.REACT_APP_BACKEND_HOST}/api/logout`)
+            .then(() => {
+                Cookie.remove("sessionToken");
+                setIsUserLoggedIn(false);
+                toast.success(
+                    "Berhasil keluar dari akun. Halaman akan memuat ulang",
+                );
+                setTimeout(() => {
+                    window.location.reload();
+                }, 3000);
+            })
+            .catch((err) => {
+                console.log(err);
+                toast.error("Gagal keluar dari akun. Silakan coba lagi.");
+            });
     };
 
     useEffect(() => {
@@ -53,6 +75,7 @@ function ApplicationNavigationBar({ home = false }) {
 
     return (
         <>
+            <ToastContainer />
             <div className="flex items-center justify-between gap-2 bg-red-orange-600 px-6 py-2 text-white shadow-md transition-all duration-300 md:gap-5 md:px-8">
                 <h1 className="hidden text-lg md:flex">
                     <Link
@@ -90,7 +113,7 @@ function ApplicationNavigationBar({ home = false }) {
                                 />
                             </svg>
                             <form
-                                autocomplete="off"
+                                autoComplete="off"
                                 className="flex w-full"
                                 onSubmit={handleFormSubmit}
                             >
@@ -124,8 +147,10 @@ function ApplicationNavigationBar({ home = false }) {
                 <div className="flex items-center gap-3">
                     {isUserLoggedIn ? (
                         <div className="flex items-center gap-2">
-                            <Link
-                                to="/profile"
+                            <button
+                                onClick={() => {
+                                    toggleMenu(!menu);
+                                }}
                                 className="flex items-center gap-2"
                             >
                                 <span className="hidden text-right text-sm md:flex">
@@ -138,7 +163,7 @@ function ApplicationNavigationBar({ home = false }) {
                                         alt=""
                                     />
                                 </div>
-                            </Link>
+                            </button>
                         </div>
                     ) : (
                         <>
@@ -156,6 +181,32 @@ function ApplicationNavigationBar({ home = false }) {
                             </a>
                         </>
                     )}
+                </div>
+            </div>
+            <div
+                className={`flex-col items-end transition duration-300 ${
+                    menu ? "flex" : "hidden"
+                }`}
+            >
+                <div className="flex w-48 flex-col gap-2 rounded-bl-md rounded-br-md bg-red-orange-200">
+                    <button
+                        className="flex rounded-md p-4 transition duration-300 hover:bg-red-orange-400"
+                        onClick={() => {
+                            toast.info("Fitur ini belum tersedia.");
+                            toggleMenu(!menu);
+                        }}
+                    >
+                        Profile Saya
+                    </button>
+                    <button
+                        className="flex rounded-md p-4 transition duration-300 hover:bg-red-orange-400"
+                        onClick={(e) => {
+                            handleLogout(e);
+                            toggleMenu(!menu);
+                        }}
+                    >
+                        Keluar
+                    </button>
                 </div>
             </div>
         </>

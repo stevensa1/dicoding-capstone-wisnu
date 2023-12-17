@@ -7,8 +7,8 @@ function NewsSlick() {
     const sliderRef = useRef(null);
 
     const newsData = [
-        { id: 1, image: "images/promo/promo-1.jpg" },
-        { id: 2, image: "images/promo/promo-2.jpg" },
+        { id: 1, image: "images/promo/Slide 16_9 - 1.svg" },
+        { id: 2, image: "images/promo/Slide 16_9 - 2.svg" },
     ];
 
     const miniBoxClick = (id) => {

@@ -10,6 +10,7 @@ import DestinationView from "./pages/Application/ViewDestination";
 import ApplicationLayout from "./layout/ApplicationLayout";
 import MyTicket from "./pages/Application/MyTicket";
 import TransactionHistory from "./pages/Application/TransactionHistory";
+import EksplorasiDestinasi from "./pages/Application/EksplorasiDestinasi";
 
 function App() {
     return (
@@ -20,6 +21,10 @@ function App() {
                 <Route path="/register" element={<ApplicationRegisterPage />} />
                 <Route path="/home" element={<ApplicationHome />} />
                 <Route element={<ApplicationLayout />}>
+                    <Route
+                        path="/eksplorasi"
+                        element={<EksplorasiDestinasi />}
+                    />
                     <Route path="/my/ticket" element={<MyTicket />} />
                     <Route
                         path="/my/transactions"

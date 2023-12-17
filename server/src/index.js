@@ -12,6 +12,7 @@ import S3Routes from './routes/S3Routes.js';
 import UserRoutes from './routes/UserRoutes.js';
 import PartnerRoutes from './routes/PartnerRoutes.js';
 import DestinationRoutes from './routes/DestinationRoutes.js';
+import GlobalRoutes from './routes/GlobalRoutes.js';
 
 const app = express();
 dotenv.config();
@@ -66,6 +67,7 @@ app.use(S3Routes);
 app.use(UserRoutes);
 app.use(PartnerRoutes);
 app.use(DestinationRoutes);
+app.use(GlobalRoutes);
 
 if (process.env.NODE_ENV === 'development') {
     const port = process.env.PORT;

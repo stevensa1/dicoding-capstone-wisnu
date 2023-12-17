@@ -1,16 +1,36 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import NavigationBar from "../../components/landingPage/NavigationBar";
 import LandingPageFooter from "../../components/landingPage/Footer";
 
 function LandingHomePage() {
+    const [statLoad, setStatLoad] = useState(false);
+    const [siteStats, setSiteStats] = useState({});
     useEffect(() => {
         AOS.init();
         window.scrollTo(0, 0);
     }, []);
+
+    useEffect(() => {
+        axios
+            .get(`${process.env.REACT_APP_BACKEND_HOST}/api/v1/site-stats`)
+            .then((res) => {
+                setSiteStats(res.data);
+                setStatLoad(true);
+            })
+            .catch((err) => {
+                toast.error("Error while fetching site statistics.");
+            });
+    }, []);
     return (
         <>
+            <ToastContainer />
             <div className="fixed inset-x-0 top-0 z-50 flex flex-col">
                 <NavigationBar />
             </div>
@@ -53,12 +73,24 @@ function LandingHomePage() {
                 </div>
                 <div className="flex flex-col gap-4 bg-white px-8 py-8 md:px-16">
                     <div className="flex flex-wrap justify-between gap-4 transition-all duration-300">
-                        <div className="h-12 w-12 rounded-full bg-gray-400 transition duration-300 hover:bg-red-orange-700"></div>
-                        <div className="h-12 w-12 rounded-full bg-gray-400 transition duration-300 hover:bg-red-orange-700"></div>
-                        <div className="h-12 w-12 rounded-full bg-gray-400 transition duration-300 hover:bg-red-orange-700"></div>
-                        <div className="h-12 w-12 rounded-full bg-gray-400 transition duration-300 hover:bg-red-orange-700"></div>
-                        <div className="h-12 w-12 rounded-full bg-gray-400 transition duration-300 hover:bg-red-orange-700"></div>
-                        <div className="h-12 w-12 rounded-full bg-gray-400 transition duration-300 hover:bg-red-orange-700"></div>
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white">
+                            #1
+                        </div>
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white">
+                            #2
+                        </div>
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white">
+                            #3
+                        </div>
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white">
+                            #4
+                        </div>
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white">
+                            #5
+                        </div>
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white">
+                            #6
+                        </div>
                     </div>
                 </div>
                 <div className="flex flex-col items-center gap-4 px-8 py-8 md:px-16 lg:flex-row">
@@ -209,25 +241,57 @@ function LandingHomePage() {
                     }}
                 >
                     <div className="flex flex-col items-center gap-2">
-                        <h1 className="text-6xl font-bold md:text-4xl">0</h1>
+                        <h1 className="text-6xl font-bold md:text-4xl">
+                            {statLoad ? (
+                                siteStats.numberOfRegisteredUsers
+                            ) : (
+                                <>
+                                    <Skeleton width={100} />
+                                </>
+                            )}
+                        </h1>
                         <p className="md:text-md text-lg font-bold text-gray-300">
-                            Kabupaten/Kota
+                            Pengguna Terdaftar
                         </p>
                     </div>
                     <div className="flex flex-col items-center gap-2">
-                        <h1 className="text-6xl font-bold md:text-4xl">0</h1>
+                        <h1 className="text-6xl font-bold md:text-4xl">
+                            {statLoad ? (
+                                siteStats.numberOfRegisteredPartners
+                            ) : (
+                                <>
+                                    <Skeleton width={100} />
+                                </>
+                            )}
+                        </h1>
                         <p className="md:text-md text-lg font-bold text-gray-300">
                             Mitra Wisata
                         </p>
                     </div>
                     <div className="flex flex-col items-center gap-2">
-                        <h1 className="text-6xl font-bold md:text-4xl">0</h1>
+                        <h1 className="text-6xl font-bold md:text-4xl">
+                            {statLoad ? (
+                                siteStats.numberOfRegisteredDestinations
+                            ) : (
+                                <>
+                                    <Skeleton width={100} />
+                                </>
+                            )}
+                        </h1>
                         <p className="md:text-md text-lg font-bold text-gray-300">
                             Destinasi Wisata
                         </p>
                     </div>
                     <div className="flex flex-col items-center gap-2">
-                        <h1 className="text-6xl font-bold md:text-4xl">0</h1>
+                        <h1 className="text-6xl font-bold md:text-4xl">
+                            {statLoad ? (
+                                siteStats.numberOfPurchasedTickets
+                            ) : (
+                                <>
+                                    <Skeleton width={100} />
+                                </>
+                            )}
+                        </h1>
                         <p className="md:text-md text-lg font-bold text-gray-300">
                             Tiket Terjual
                         </p>

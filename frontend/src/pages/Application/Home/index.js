@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
     faCompass,
     faTicket,
@@ -62,7 +64,10 @@ function ApplicationHome() {
                 <div className="flex flex-col gap-4">
                     <h1 className="text-lg font-bold">Layanan WisNu</h1>
                     <div className="flex flex-wrap gap-1">
-                        <div className="flex flex-col items-center gap-1">
+                        <Link
+                            to="/eksplorasi"
+                            className="flex flex-col items-center gap-1"
+                        >
                             <div className="flex h-12 w-12 items-center justify-center">
                                 <FontAwesomeIcon
                                     icon={faCompass}
@@ -73,7 +78,7 @@ function ApplicationHome() {
                             <div className="w-24 text-center text-sm">
                                 Destinasi Wisata
                             </div>
-                        </div>
+                        </Link>
                         <Link
                             to="/my/ticket"
                             className="flex flex-col items-center gap-1"
@@ -89,7 +94,12 @@ function ApplicationHome() {
                                 Tiket Saya
                             </div>
                         </Link>
-                        <div className="flex flex-col items-center gap-1">
+                        <button
+                            onClick={() => {
+                                toast.info("Fitur ini belum tersedia.");
+                            }}
+                            className="flex flex-col items-center gap-1"
+                        >
                             <div className="flex h-12 w-12 items-center justify-center">
                                 <FontAwesomeIcon
                                     icon={faTags}
@@ -100,7 +110,7 @@ function ApplicationHome() {
                             <div className="w-24 text-center text-sm">
                                 Voucher dan Promo
                             </div>
-                        </div>
+                        </button>
                         <Link
                             to="/my/transactions"
                             className="flex flex-col items-center gap-1"
@@ -116,7 +126,12 @@ function ApplicationHome() {
                                 Riwayat Pembelian
                             </div>
                         </Link>
-                        <div className="flex flex-col items-center gap-1">
+                        <button
+                            onClick={() => {
+                                toast.info("Fitur ini belum tersedia.");
+                            }}
+                            className="flex flex-col items-center gap-1"
+                        >
                             <div className="flex h-12 w-12 items-center justify-center">
                                 <FontAwesomeIcon
                                     icon={faHeadset}
@@ -127,7 +142,7 @@ function ApplicationHome() {
                             <div className="w-24 text-center text-sm">
                                 Customer Service
                             </div>
-                        </div>
+                        </button>
                     </div>
                 </div>
                 <div className="flex flex-col gap-4">
@@ -195,12 +210,6 @@ function ApplicationHome() {
                                   />
                               ))}
                     </div>
-                </div>
-                <div className="flex flex-col gap-4">
-                    <h1 className="text-lg font-bold">
-                        Lengkapi Pengalaman Anda Berpetualang di Nusantara
-                    </h1>
-                    <div className="flex flex-col gap-4 md:flex-row">Todo</div>
                 </div>
             </div>
             <div className="flex flex-col">
