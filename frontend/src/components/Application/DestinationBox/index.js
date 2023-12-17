@@ -1,8 +1,10 @@
 import React from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { Link } from "react-router-dom";
 
 function DestinationBox({
+    url = "/",
     image,
     name,
     category,
@@ -11,7 +13,10 @@ function DestinationBox({
     rating,
 }) {
     return (
-        <div className="w-full overflow-hidden rounded border border-gray-300 md:w-72">
+        <Link
+            to={url}
+            className="w-full overflow-hidden rounded border border-gray-300 md:w-72"
+        >
             {(
                 <img
                     src={image}
@@ -27,7 +32,14 @@ function DestinationBox({
                     {location || <Skeleton />}
                 </div>
                 <div className="mb-4 text-sm text-gray-700">
-                    {description || <Skeleton count={2} />}
+                    {(
+                        <>
+                            {description}...{" "}
+                            <Link className="text-red-orange-600" to={url}>
+                                Baca lebih lanjut
+                            </Link>
+                        </>
+                    ) || <Skeleton count={2} />}
                 </div>
                 <div className="w-fit bg-red-orange-200 px-2 py-1 text-xs text-gray-700">
                     {category || <Skeleton />}
@@ -40,7 +52,7 @@ function DestinationBox({
                     </div>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
 

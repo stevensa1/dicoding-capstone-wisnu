@@ -9,10 +9,7 @@ function NotFoundPage() {
 
     return (
         <>
-            <div className="fixed inset-x-0 top-0 z-50 flex flex-col">
-                <ApplicationNavigationBar />
-            </div>
-            <div className="flex w-screen flex-col-reverse items-center gap-8 px-16 py-2 pt-20 md:flex-row md:pt-2">
+            <div className="flex w-full flex-col-reverse items-center gap-8 px-16 py-2 pt-20 md:flex-row">
                 <div className="flex w-full flex-col gap-8">
                     <div className="flex flex-col gap-4">
                         <h1 className="text-4xl font-bold">Ooopsss!</h1>
@@ -45,9 +42,6 @@ function NotFoundPage() {
                         <p className="text-lg">Page not found.</p>
                     </div>
                 </div>
-            </div>
-            <div className="flex flex-col">
-                <LandingPageFooter />
             </div>
         </>
     );

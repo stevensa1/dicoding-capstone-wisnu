@@ -237,3 +237,26 @@ export const getPartnerData = async (req, res) => {
         });
     }
 };
+
+export const getMinimalPartnerDataById = async (req, res) => {
+    try {
+        const partner = await PartnerSchema.findOne({
+            _id: req.params.id,
+        }).select(
+            '-password -partnerUUID -description -destinationViews -phoneNumber -emailAddress'
+        );
+        const destinationCount = partner.managedDestination.length;
+        return res.status(200).json({
+            partnerName: partner.companyName,
+            partnerLogo: partner.logoAddress,
+            isVerified: partner.isVerified,
+            destinationCount: destinationCount,
+            destinationSales: partner.ticketSales,
+            averageRating: partner.averageRating,
+        });
+    } catch (e) {
+        return res.status(500).json({
+            message: e.message,
+        });
+    }
+};

@@ -41,6 +41,10 @@ function ApplicationNavigationBar() {
                         });
                         setIsUserLoggedIn(true);
                     }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    Cookie.remove("sessionToken");
                 });
         }
     }, []);

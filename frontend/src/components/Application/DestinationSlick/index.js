@@ -32,10 +32,10 @@ function DestinationSlick({ destinationData }) {
         <>
             <Slider {...settings} ref={sliderRef}>
                 {destinationData.map((img) => (
-                    <div key={img.id}>
+                    <div key={img.alt}>
                         <img
-                            src={img.image}
-                            alt={`${img.id}`}
+                            src={`https://${process.env.REACT_APP_BUCKET_URL}${img.imageAddress}`}
+                            alt={`${img.alt}`}
                             className="aspect-video h-64 w-full object-cover object-center"
                         />
                     </div>

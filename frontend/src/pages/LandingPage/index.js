@@ -7,6 +7,7 @@ import LandingPageFooter from "../../components/landingPage/Footer";
 function LandingHomePage() {
     useEffect(() => {
         AOS.init();
+        window.scrollTo(0, 0);
     }, []);
     return (
         <>

@@ -48,11 +48,16 @@ export const getDestinationById = async (req, res) => {
         const destination = await DestinationModel.findOne({
             _id: req.params.id,
         });
+        // Update views count + 1
+        await DestinationModel.updateOne(
+            { _id: req.params.id },
+            { $inc: { destinationViews: 1 } }
+        );
         return res.status(200).json({
             destination,
         });
-    } catch {
-        return res.status(500).json({
+    } catch (e) {
+        return res.status(404).json({
             message: e.message,
         });
     }
@@ -108,6 +113,15 @@ export const postNewDestination = async (req, res) => {
                 destinationOpenTime: destinationOpenTime,
                 destinationTicket: destinationTicket,
             });
+            // Add destination id to partner's destination list
+            await PartnerSchema.updateOne(
+                { _id: res.locals.user.id },
+                {
+                    $push: {
+                        partnerDestinationList: newDestination._id,
+                    },
+                }
+            );
             return res.status(201).json({
                 message: 'New destination created.',
             });

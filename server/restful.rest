@@ -6,7 +6,7 @@ content-type: application/json
 }
 
 ###
-POST http://localhost:3001/api/login
+POST https://localhost/api/login
 content-type: application/json
 
 {
@@ -19,7 +19,7 @@ GET https://localhost/api/user
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzk0ZjE5NmY2NTM5YzIxNWJhOWY0NSIsInVzZXJOYW1lIjoic3RldmVuc2ExMiIsImVtYWlsQWRkcmVzcyI6InN0ZXZlbi5hcHBzLnBhaWRAZ21haWwuY29tIiwiaWF0IjoxNzAyNDU1MTUwLCJleHAiOjE3MDI1NDE1NTB9.oZe2-9uL7CnFGVnsc1IXb91EzWdA6ZnbRvAzjuCL7Ew
 
 ###
-GET http://localhost:3001/email?emailAddress=steven.soewignyo@gmail.com
+GET http://192.168.1.2:3001/api/partner/destination/
 
 ###
 POST https://api.wisnu.store/api/validation/email
@@ -29,12 +29,10 @@ content-type: application/json
     "emailAddress": "steven.soewignyo@gmail.com"
 }
 
-
 ###
-GET http://localhost:3001/presigned-url?filename=123.txt
+PUT https://api.wisnu.store/api/partner/request
+content-type: application/json
 
-###
-GET https://stevensa1.github.io/api-wilayah-indonesia/api/provinces.json
-
-###
-GET https://stevensa1.github.io/api-wilayah-indonesia/api/regencies/11.json
+{
+    "partnerUUID": "602d8778-c8f0-4fb6-8bb8-acd1bd275b5a"
+}
