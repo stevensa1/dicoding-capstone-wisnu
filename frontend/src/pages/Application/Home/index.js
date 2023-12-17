@@ -8,8 +8,6 @@ import {
     faClipboardList,
     faHeadset,
 } from "@fortawesome/free-solid-svg-icons";
-import ApplicationNavigationBar from "../../../components/Application/NavigationBar";
-import LandingPageFooter from "../../../components/landingPage/Footer";
 import DestinationBox from "../../../components/Application/DestinationBox";
 import NewsSlick from "../../../components/Application/NewsSlick";
 
@@ -110,84 +108,12 @@ function ApplicationHome() {
                 <div className="flex flex-col gap-4">
                     <h1 className="text-lg font-bold">Destinasi Populer</h1>
                     <div className="flex flex-col gap-4 md:flex-row">
-                        <DestinationBox
-                            image="images/landing-bg.jpg"
-                            name="Destination Name"
-                            category="Gunung"
-                            location="Kota Surabaya"
-                            description="Short description of the destination."
-                            rating={4}
-                        />
-                        <DestinationBox
-                            image="images/landing-section-number.jpg"
-                            name="Destination Name"
-                            category="Gunung"
-                            location="Kota Surabaya"
-                            description="Short description of the destination."
-                            rating={4}
-                        />
-                        <DestinationBox
-                            image="images/landing-bg.jpg"
-                            name="Destination Name"
-                            category="Gunung"
-                            location="Kota Surabaya"
-                            description="Short description of the destination."
-                            rating={4}
-                        />
-                        <DestinationBox
-                            image="images/landing-bg.jpg"
-                            name="Destination Name"
-                            category="Gunung"
-                            location="Kota Surabaya"
-                            description="Short description of the destination."
-                            rating={4}
-                        />
-                        <DestinationBox
-                            image="images/landing-bg.jpg"
-                            name="Destination Name"
-                            category="Gunung"
-                            location="Kota Surabaya"
-                            description="Short description of the destination."
-                            rating={4}
-                        />
+                        Todo Sort by views
                     </div>
                 </div>
                 <div className="flex flex-col gap-4">
                     <h1 className="text-lg font-bold">Destinasi Viral</h1>
-                    <div className="flex flex-col gap-4 md:flex-row">
-                        <DestinationBox
-                            image="images/landing-bg.jpg"
-                            name="Destination Name"
-                            category="Gunung"
-                            location="Kota Surabaya"
-                            description="Short description of the destination."
-                            rating={4}
-                        />
-                        <DestinationBox
-                            image="images/landing-section-number.jpg"
-                            name="Destination Name"
-                            category="Gunung"
-                            location="Kota Surabaya"
-                            description="Short description of the destination."
-                            rating={4}
-                        />
-                        <DestinationBox
-                            image="images/landing-bg.jpg"
-                            name="Destination Name"
-                            category="Gunung"
-                            location="Kota Surabaya"
-                            description="Short description of the destination."
-                            rating={4}
-                        />
-                        <DestinationBox
-                            image="images/landing-bg.jpg"
-                            name="Destination Name"
-                            category="Gunung"
-                            location="Kota Surabaya"
-                            description="Short description of the destination."
-                            rating={4}
-                        />
-                    </div>
+                    <div className="flex flex-col gap-4 md:flex-row">Todo</div>
                 </div>
                 <div className="flex flex-col gap-4">
                     <h1 className="text-lg font-bold">Destinasi Baru</h1>
@@ -204,7 +130,7 @@ function ApplicationHome() {
                                       location={destination.destinationAddress}
                                       description={destination.destinationDescription.slice(
                                           0,
-                                          250,
+                                          100,
                                       )}
                                       rating={4}
                                   />
@@ -215,40 +141,7 @@ function ApplicationHome() {
                     <h1 className="text-lg font-bold">
                         Lengkapi Pengalaman Anda Berpetualang di Nusantara
                     </h1>
-                    <div className="flex flex-col gap-4 md:flex-row">
-                        <DestinationBox
-                            image="images/landing-bg.jpg"
-                            name="Destination Name"
-                            category="Gunung"
-                            location="Kota Surabaya"
-                            description="Short description of the destination."
-                            rating={4}
-                        />
-                        <DestinationBox
-                            image="images/landing-section-number.jpg"
-                            name="Destination Name"
-                            category="Gunung"
-                            location="Kota Surabaya"
-                            description="Short description of the destination."
-                            rating={4}
-                        />
-                        <DestinationBox
-                            image="images/landing-bg.jpg"
-                            name="Destination Name"
-                            category="Gunung"
-                            location="Kota Surabaya"
-                            description="Short description of the destination."
-                            rating={4}
-                        />
-                        <DestinationBox
-                            image="images/landing-bg.jpg"
-                            name="Destination Name"
-                            category="Gunung"
-                            location="Kota Surabaya"
-                            description="Short description of the destination."
-                            rating={4}
-                        />
-                    </div>
+                    <div className="flex flex-col gap-4 md:flex-row">Todo</div>
                 </div>
             </div>
         </>

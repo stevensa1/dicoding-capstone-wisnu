@@ -13,14 +13,9 @@ const router = Router();
 router.get('/api/destination/', getAllDestination);
 router.get('/api/destination/:id', getDestinationById);
 router.get(
-    '/api/partner/destination/',
+    '/access/api/destination/',
     isPartnerAuth,
     getAllDestinationByPartner
-);
-router.get(
-    '/api/partner/destination/:id',
-    isPartnerAuth,
-    getDestinationByIdForPartner
 );
 router.post('/api/partner/destination/', isPartnerAuth, postNewDestination);
 

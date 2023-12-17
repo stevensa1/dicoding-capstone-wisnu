@@ -9,7 +9,7 @@ import axios from "axios";
 import Cookie from "js-cookie";
 
 function KelolaSitusWisata() {
-    const sessionToken = Cookie.get("sessionToken");
+    const sessionToken = Cookie.get("partnerSessionToken");
     useEffect(() => {
         document.title = "WisNu Partner - Kelola Situs Wisata";
     }, []);
@@ -18,7 +18,7 @@ function KelolaSitusWisata() {
     useEffect(() => {
         axios
             .get(
-                `${process.env.REACT_APP_BACKEND_HOST}/api/partner/destination/`,
+                `${process.env.REACT_APP_BACKEND_HOST}/access/api/destination/`,
                 {
                     headers: {
                         Authorization: `Bearer ${sessionToken}`,

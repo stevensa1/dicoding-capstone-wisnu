@@ -5,7 +5,7 @@ import BlackEmailLogoSVG from "../../components/SVGs/BlackEmailLogoSVG";
 import BlackLockLogoSVG from "../../components/SVGs/BlackLockLogoSVG";
 
 function LoginPage() {
-    const sessionToken = Cookie.get("sessionToken");
+    const sessionToken = Cookie.get("partnerSessionToken");
     useEffect(() => {
         if (sessionToken) {
             axios
@@ -55,7 +55,7 @@ function LoginPage() {
             )
             .then((res) => {
                 if (res.status === 200) {
-                    Cookie.set("sessionToken", res.data.token, {
+                    Cookie.set("partnerSessionToken", res.data.token, {
                         expires: 1,
                     });
                     window.location.href = "/dashboard";

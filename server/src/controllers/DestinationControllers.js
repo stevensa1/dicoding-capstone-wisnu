@@ -30,7 +30,7 @@ export const getAllDestinationByPartner = async (req, res) => {
                 totalDestination: destinations.length,
                 destinations,
             });
-        } catch {
+        } catch (e) {
             return res.status(500).json({
                 message: e.message,
             });
