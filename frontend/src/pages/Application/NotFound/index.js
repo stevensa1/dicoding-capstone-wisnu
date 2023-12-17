@@ -7,7 +7,7 @@ function NotFoundPage() {
 
     return (
         <>
-            <div className="flex w-full flex-col-reverse items-center gap-8 px-16 py-2 pt-20 md:flex-row">
+            <div className="flex min-h-screen w-full flex-col-reverse items-center gap-8 px-16 py-2 pt-20 md:flex-row">
                 <div className="flex w-full flex-col gap-8">
                     <div className="flex flex-col gap-4">
                         <h1 className="text-4xl font-bold">Ooopsss!</h1>

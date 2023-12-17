@@ -1,5 +1,7 @@
 import React, { useRef } from "react";
 import Slider from "react-slick";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -7,8 +9,16 @@ function NewsSlick() {
     const sliderRef = useRef(null);
 
     const newsData = [
-        { id: 1, image: "images/promo/Slide 16_9 - 1.svg" },
-        { id: 2, image: "images/promo/Slide 16_9 - 2.svg" },
+        {
+            id: 1,
+            image: "images/promo/Slide 16_9 - 1.jpg",
+            placeholder: "images/promo/Slide 16_9 - 1-min.jpg",
+        },
+        {
+            id: 2,
+            image: "images/promo/Slide 16_9 - 2.jpg",
+            placeholder: "images/promo/Slide 16_9 - 2-min.jpg",
+        },
     ];
 
     const miniBoxClick = (id) => {
@@ -23,6 +33,7 @@ function NewsSlick() {
 
     const settings = {
         dots: true,
+        arrows: false,
         infinite: true,
         speed: 500,
         autoplay: true,
@@ -35,10 +46,13 @@ function NewsSlick() {
             <Slider {...settings} ref={sliderRef}>
                 {newsData.map((news) => (
                     <div key={news.id}>
-                        <img
+                        <LazyLoadImage
                             src={news.image}
                             alt={`News ${news.id}`}
-                            className="h-32 w-full object-cover md:h-64"
+                            width="100%"
+                            height={256}
+                            className="w-full object-cover md:h-64"
+                            effect="blur"
                         />
                     </div>
                 ))}

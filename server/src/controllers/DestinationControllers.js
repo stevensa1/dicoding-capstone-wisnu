@@ -308,6 +308,37 @@ const updateAverageRating = async (partnerId) => {
     }
 };
 
+const updateDestinationAverageRating = async (destinationId) => {
+    try {
+        const reviews = await ReviewModel.find({
+            reviewDestinationId: destinationId,
+        });
+
+        if (reviews.length > 0) {
+            // Calculate average rating
+            const totalRating = reviews.reduce(
+                (sum, review) => sum + review.reviewRating,
+                0
+            );
+            const averageRating = totalRating / reviews.length;
+
+            // Update the averageRating field in the PartnerSchema
+            await DestinationModel.updateOne(
+                { _id: destinationId },
+                { destinationAverageRating: averageRating }
+            );
+        } else {
+            // No reviews, set averageRating to 0
+            await DestinationModel.updateOne(
+                { _id: destinationId },
+                { destinationAverageRating: 0 }
+            );
+        }
+    } catch (error) {
+        console.error('Error updating averageRating:', error.message);
+    }
+};
+
 // Function to update averageRating for all partners
 export const updateAllAverageRatings = async (req, res) => {
     try {
@@ -368,6 +399,7 @@ export const createReview = async (req, res) => {
 
             // Update the averageRating for the reviewed partner
             await updateAverageRating(reviewPartnerId);
+            await updateDestinationAverageRating(reviewDestinationId);
 
             return res.status(201).json({
                 message: 'Review created successfully',

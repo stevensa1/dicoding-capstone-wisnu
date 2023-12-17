@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import Cookie from "js-cookie";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -59,6 +59,10 @@ function DestinationView() {
                     type: "error",
                 });
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [destinationId, reviewLoad]);
+
+    useEffect(() => {
         if (sessionToken) {
             axios
                 .get(
@@ -96,11 +100,16 @@ function DestinationView() {
                     });
                 });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [destinationId]);
+    }, [sessionToken, destinationId]);
 
     const handleReviewSubmission = (e) => {
         e.preventDefault();
+        if (myReview.reviewRating === 0) {
+            toast("Anda harus memberikan rating terlebih dahulu", {
+                type: "error",
+            });
+            return;
+        }
         if (sessionToken) {
             axios
                 .post(
@@ -122,6 +131,7 @@ function DestinationView() {
                         ...myReview,
                         alreadyReviewed: true,
                     });
+                    setReviewLoad(false);
                     toast("Ulasan berhasil dikirim", {
                         type: "success",
                     });
@@ -242,7 +252,6 @@ function DestinationView() {
     const handleTabClick = (tabName) => setActiveTab(tabName);
     return (
         <>
-            <ToastContainer />
             <Modal toggle={purchaseTicketModal}>
                 <div className="flex w-[350px] flex-col p-4 md:w-[800px] md:p-8">
                     <div className="flex justify-between">
@@ -366,10 +375,12 @@ function DestinationView() {
                                 <div className="flex items-center gap-2 rounded-md border px-4 py-2">
                                     <DatePicker
                                         required
+                                        showIcon
                                         className="w-full rounded-md border-0 bg-white p-2 text-gray-800 outline-none"
                                         selected={purchaseTicketData.ticketDate}
                                         onChange={handleDateChange}
                                         dateFormat="yyyy-MM-dd"
+                                        minDate={new Date()}
                                     />
                                 </div>
                             </div>

@@ -6,6 +6,8 @@ import AppleLogoSVG from "../../../components/SVGs/AppleLogoSVG";
 import MicrosoftLogoSVG from "../../../components/SVGs/MicrosoftLogoSVG";
 import BlackEmailLogoSVG from "../../../components/SVGs/BlackEmailLogoSVG";
 import BlackLockLogoSVG from "../../../components/SVGs/BlackLockLogoSVG";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ApplicationLoginPage() {
     const sessionToken = Cookie.get("sessionToken");
@@ -65,17 +67,22 @@ function ApplicationLoginPage() {
             })
             .catch((e) => {
                 if (e.response.status === 404) {
-                    setIsUserNameNotExist(true);
+                    return setIsUserNameNotExist(true);
                 } else if (e.response.status === 401) {
-                    setIsPasswordIncorrect(true);
+                    return setIsPasswordIncorrect(true);
                 } else {
+                    setIsUserNameNotExist(true);
+                    setIsPasswordIncorrect(true);
                     console.error(e);
-                    alert("Terjadi kesalahan. Silahkan coba lagi.");
+                    return toast.error(
+                        "Terjadi kesalahan. Silahkan coba lagi.",
+                    );
                 }
             });
     };
     return (
         <>
+            <ToastContainer />
             {isNotLoggedIn ? (
                 <>
                     <div className="bg-gray flex h-full items-center justify-center p-4 md:h-full md:items-start md:bg-red-orange-600 md:p-0">
@@ -168,6 +175,20 @@ function ApplicationLoginPage() {
                                     >
                                         Lupa password?
                                     </a>
+                                </div>
+                                <div className="text-red-500">
+                                    {isPasswordIncorrect && (
+                                        <p>
+                                            Password is incorrect. Please try
+                                            again.
+                                        </p>
+                                    )}
+                                    {isUserNameNotExist && (
+                                        <p>
+                                            Username does not exist. Please
+                                            check your credentials.
+                                        </p>
+                                    )}
                                 </div>
                                 <button
                                     type="submit"

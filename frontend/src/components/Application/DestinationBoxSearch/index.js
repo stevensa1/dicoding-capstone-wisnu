@@ -1,6 +1,8 @@
 import React from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import { Link } from "react-router-dom";
 
 function DestinationBoxSearch({
@@ -18,9 +20,12 @@ function DestinationBoxSearch({
             className="w-full overflow-hidden rounded border border-gray-300 bg-white transition duration-300 ease-in-out hover:shadow-lg md:w-72"
         >
             {(
-                <img
+                <LazyLoadImage
                     src={image}
+                    height={160}
+                    width="100%"
                     alt={`Destination ${name}`}
+                    effect="blur"
                     className="h-40 w-full object-cover"
                 />
             ) || <Skeleton height={160} />}
@@ -46,9 +51,7 @@ function DestinationBoxSearch({
                 </div>
                 <div className="flex items-center">
                     <div className="text-yellow-500">
-                        {Array.from({ length: rating }, (_, index) => (
-                            <span key={index}>&#9733;</span>
-                        ))}
+                        <span>&#9733;</span> {rating.toFixed(2) || <Skeleton />}
                     </div>
                 </div>
             </div>

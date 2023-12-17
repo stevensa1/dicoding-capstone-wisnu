@@ -5,6 +5,8 @@ import GoogleLogoSVG from "../../../components/SVGs/GoogleLogoSVG";
 import AppleLogoSVG from "../../../components/SVGs/AppleLogoSVG";
 import MicrosoftLogoSVG from "../../../components/SVGs/MicrosoftLogoSVG";
 import BlackEmailLogoSVG from "../../../components/SVGs/BlackEmailLogoSVG";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ApplicationRegisterPage() {
     useEffect(() => {
@@ -87,7 +89,7 @@ function ApplicationRegisterPage() {
         const emailAddress = registerFormData.emailAddress;
         const isValidEmail = emailRegex.test(emailAddress);
         if (!isValidEmail) {
-            return alert("Email address is not valid!");
+            return toast.error("Email address is not valid!");
         } else {
             axios
                 .post(
@@ -99,23 +101,23 @@ function ApplicationRegisterPage() {
                 .then((res) => {
                     if (res.status === 200) {
                         setStep(2);
-                        return alert(
+                        return toast.info(
                             `${registerFormData.emailAddress} is valid email address and available!`,
                         );
                     }
                 })
                 .catch((e) => {
                     if (e.response.status === 409) {
-                        return alert(
+                        return toast.error(
                             `${registerFormData.emailAddress} is valid email address but already registered!`,
                         );
                     }
                     if (e.response.status === 400) {
-                        return alert(
+                        return toast.error(
                             `${registerFormData.emailAddress} is invalid email address!`,
                         );
                     }
-                    alert(
+                    toast.error(
                         "Terjadi kesalahan pada sistem. Silahkan hubungi admin.",
                     );
                     // throw new Error(e);
@@ -129,7 +131,7 @@ function ApplicationRegisterPage() {
 
         // Check file size
         if (file.size > MAX_FILE_SIZE) {
-            alert(
+            toast.error(
                 `File size is too large! Maximum allowed size is ${
                     MAX_FILE_SIZE / 1024 / 1024
                 } MB.`,
@@ -187,28 +189,25 @@ function ApplicationRegisterPage() {
                             )
                             .then((res) => {
                                 if (res.status === 201) {
-                                    alert(
-                                        "Registrasi berhasil! Silahkan login untuk melanjutkan.",
-                                    );
                                     window.location.href = "/login";
                                 }
                             })
                             .catch((e) => {
-                                alert(
+                                toast.error(
                                     "Terjadi kesalahan pada sistem. Silahkan hubungi admin.",
                                 );
-                                throw new Error(e);
+                                console.error(e);
                             });
                     })
                     .catch((e) => {
-                        alert(
+                        toast.error(
                             "Terjadi kesalahan saat upload foto profile. Silahkan hubungi admin.",
                         );
                         console.log(e);
                     });
             })
             .catch((e) => {
-                alert(
+                toast.error(
                     "Terjadi kesalahan pada presigned URL. Silahkan hubungi admin.",
                 );
                 console.log(e);
@@ -217,6 +216,7 @@ function ApplicationRegisterPage() {
 
     return (
         <>
+            <ToastContainer />
             <div className="bg-gray flex h-full flex-row-reverse items-center justify-center p-4 md:h-full md:items-start md:bg-red-orange-600 md:p-0">
                 <div className="flex flex-col gap-8 rounded-lg bg-white p-8 shadow-md md:max-h-full md:min-h-screen md:p-12 md:shadow-none">
                     <div>
@@ -500,6 +500,12 @@ function ApplicationRegisterPage() {
                                             className="w-full border-0 outline-none"
                                             name="birthDate"
                                             type="date"
+                                            max={
+                                                new Date()
+                                                    .toISOString()
+                                                    .split("T")[0]
+                                            }
+                                            placeholder="Tanggal lahir"
                                             onChange={handleFormChange}
                                         />
                                     </div>

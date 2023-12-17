@@ -134,6 +134,20 @@ function LoginPage() {
                                     Lupa password?
                                 </a>
                             </div>
+                            <div className="text-red-500">
+                                {isPasswordIncorrect && (
+                                    <p>
+                                        Password tidak sesuai. Silahkan coba
+                                        lagi.
+                                    </p>
+                                )}
+                                {isUserNameNotExist && (
+                                    <p>
+                                        Alamat email mitra tidak tersedia.
+                                        Silahkan coba lagi.
+                                    </p>
+                                )}
+                            </div>
                             <button
                                 type="submit"
                                 className="rounded-md bg-red-orange-600 px-4 py-2 text-white transition duration-300 hover:bg-red-orange-950"

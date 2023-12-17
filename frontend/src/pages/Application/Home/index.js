@@ -33,7 +33,9 @@ function ApplicationHome() {
             .get(`${process.env.REACT_APP_BACKEND_HOST}/api/destination/`)
             .then((res) => {
                 if (res.status !== 200) {
-                    alert("Terjadi kesalahan saat mengambil data destinasi.");
+                    toast.error(
+                        "Terjadi kesalahan saat mengambil data destinasi.",
+                    );
                     return;
                 }
                 setDestinations(res.data.destinations);
@@ -162,7 +164,9 @@ function ApplicationHome() {
                                           0,
                                           100,
                                       )}
-                                      rating={4}
+                                      rating={
+                                          destination.destinationAverageRating
+                                      }
                                   />
                               ))}
                     </div>
@@ -184,14 +188,16 @@ function ApplicationHome() {
                                           0,
                                           100,
                                       )}
-                                      rating={4}
+                                      rating={
+                                          destination.destinationAverageRating
+                                      }
                                   />
                               ))}
                     </div>
                 </div>
                 <div className="flex flex-col gap-4">
                     <h1 className="text-lg font-bold">Destinasi Baru</h1>
-                    <div className="flex flex-col gap-4 md:flex-row md:flex-wrap">
+                    <div className="flex flex-col gap-4 md:flex-row">
                         {!dataLoad
                             ? ""
                             : newDestinations.map((destination, index) => (
@@ -206,7 +212,9 @@ function ApplicationHome() {
                                           0,
                                           100,
                                       )}
-                                      rating={4}
+                                      rating={
+                                          destination.destinationAverageRating
+                                      }
                                   />
                               ))}
                     </div>

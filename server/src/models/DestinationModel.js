@@ -108,6 +108,11 @@ const DestinationModel = mongoose.Schema({
         required: true,
         default: 0,
     },
+    destinationAverageRating: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
 });
 
 export default mongoose.model('Destination', DestinationModel, 'destinations');

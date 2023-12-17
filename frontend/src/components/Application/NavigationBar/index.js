@@ -4,6 +4,8 @@ import axios from "axios";
 import Cookie from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
@@ -24,7 +26,6 @@ function ApplicationNavigationBar({ home = false }) {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        // alert(`WisNu System: Search result for ${searchForm}.`);
         navigate(`/search/${searchForm}`);
     };
 
@@ -98,8 +99,8 @@ function ApplicationNavigationBar({ home = false }) {
                     />
                 </button>
                 <div className="flex w-full justify-center md:justify-end">
-                    <div class="flex w-full rounded-md bg-white p-2 px-2 md:w-1/2 md:p-1 md:px-1">
-                        <div class="flex w-full">
+                    <div className="flex w-full rounded-md bg-white p-2 px-2 md:w-1/2 md:p-1 md:px-1">
+                        <div className="flex w-full">
                             <svg
                                 className="flex md:hidden"
                                 width="15"
@@ -126,7 +127,7 @@ function ApplicationNavigationBar({ home = false }) {
                                 />
                                 <button
                                     type="submit"
-                                    class="hidden items-center justify-center rounded-sm bg-red-orange-500 px-5 py-2.5 md:flex"
+                                    className="hidden items-center justify-center rounded-sm bg-red-orange-500 px-5 py-2.5 md:flex"
                                 >
                                     <svg
                                         width="15"
@@ -157,10 +158,13 @@ function ApplicationNavigationBar({ home = false }) {
                                     {userData.fullName}
                                 </span>
                                 <div className="flex aspect-square items-center justify-center overflow-hidden rounded-full">
-                                    <img
+                                    <LazyLoadImage
+                                        width={48}
+                                        height={48}
+                                        effect="blur"
                                         className="h-12 w-12 rounded-full object-cover object-center"
                                         src={`https://${process.env.REACT_APP_BUCKET_URL}${userData.profilePictureAddress}`}
-                                        alt=""
+                                        alt="Profile Picture"
                                     />
                                 </div>
                             </button>
@@ -198,6 +202,12 @@ function ApplicationNavigationBar({ home = false }) {
                     >
                         Profile Saya
                     </button>
+                    <Link
+                        to="/my/ticket"
+                        className="flex rounded-md p-4 transition duration-300 hover:bg-red-orange-400"
+                    >
+                        Tiket saya
+                    </Link>
                     <button
                         className="flex rounded-md p-4 transition duration-300 hover:bg-red-orange-400"
                         onClick={(e) => {
