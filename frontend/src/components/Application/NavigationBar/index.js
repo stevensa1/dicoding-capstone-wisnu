@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookie from "js-cookie";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
-function ApplicationNavigationBar() {
+function ApplicationNavigationBar({ home = false }) {
     const navigate = useNavigate();
     const [searchForm, setSearchForm] = useState("");
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
@@ -62,35 +64,15 @@ function ApplicationNavigationBar() {
                 </h1>
                 <button
                     onClick={() => {
-                        alert("WisNu System: Menu is not setup yet");
+                        navigate(-1);
                     }}
-                    className="flex pr-2 md:hidden"
+                    className={`pr-2 md:hidden ${home ? "hidden" : "flex"}`}
                 >
-                    <svg
-                        width="30"
-                        viewBox="0 0 54 35"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            d="M2 2.5H52"
-                            stroke="white"
-                            stroke-width="4"
-                            stroke-linecap="round"
-                        />
-                        <path
-                            d="M2 18H34"
-                            stroke="white"
-                            stroke-width="4"
-                            stroke-linecap="round"
-                        />
-                        <path
-                            d="M2 33H47"
-                            stroke="white"
-                            stroke-width="4"
-                            stroke-linecap="round"
-                        />
-                    </svg>
+                    <FontAwesomeIcon
+                        icon={faChevronLeft}
+                        size="xl"
+                        style={{ color: "#ffffff" }}
+                    />
                 </button>
                 <div className="flex w-full justify-center md:justify-end">
                     <div class="flex w-full rounded-md bg-white p-2 px-2 md:w-1/2 md:p-1 md:px-1">
@@ -108,6 +90,7 @@ function ApplicationNavigationBar() {
                                 />
                             </svg>
                             <form
+                                autocomplete="off"
                                 className="flex w-full"
                                 onSubmit={handleFormSubmit}
                             >

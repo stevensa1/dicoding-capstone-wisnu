@@ -1,17 +1,112 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import DestinationSlick from "../../../components/Application/DestinationSlick";
-import axios from "axios";
-import { useEffect } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment";
+import Cookie from "js-cookie";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+
+import DestinationSlick from "../../../components/Application/DestinationSlick";
+import axios from "axios";
+import Modal from "../../../components/Application/Modal";
+import AnnouncmentCenter from "../../../components/Application/AnnouncmentCenter";
 
 function DestinationView() {
+    const sessionToken = Cookie.get("sessionToken");
     const { destinationId } = useParams();
     const [destinationData, setDestinationData] = useState({});
     const [partnerData, setPartnerData] = useState({});
     const [dataLoaded, setDataLoaded] = useState(false);
+    const [purchaseTicketModal, setPurchaseTicketModal] = useState(false);
+    const [purchaseTicketData, setPurchaseTicketData] = useState({
+        ticketName: "",
+        ticketPrice: "",
+        ticketDescription: "",
+        destinationId: "",
+        ticketId: "",
+        nameHolder: "",
+        ageHolder: 0,
+        ticketDate: new Date(),
+    });
     const [activeTab, setActiveTab] = useState("description");
+
+    const onTicketFormChange = (e) => {
+        setPurchaseTicketData({
+            ...purchaseTicketData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleDateChange = (date) => {
+        setPurchaseTicketData({
+            ...purchaseTicketData,
+            ticketDate: date,
+        });
+    };
+
+    const handlePurchaseSubmission = (e) => {
+        e.preventDefault();
+        const formattedDate = moment(purchaseTicketData.ticketDate).format();
+        if (sessionToken) {
+            try {
+                axios
+                    .post(
+                        `${process.env.REACT_APP_BACKEND_HOST}/api/ticket/purchase`,
+                        {
+                            destinationId: purchaseTicketData.destinationId,
+                            ticketId: purchaseTicketData.ticketId,
+                            nameHolder: purchaseTicketData.nameHolder,
+                            ageHolder: purchaseTicketData.ageHolder,
+                            ticketDate: formattedDate,
+                        },
+                        {
+                            headers: {
+                                Authorization: `Bearer ${sessionToken}`,
+                            },
+                        },
+                    )
+                    .then((res) => {
+                        setPurchaseTicketData({
+                            ticketName: "",
+                            ticketPrice: "",
+                            ticketDescription: "",
+                            destinationId: "",
+                            ticketId: "",
+                            nameHolder: "",
+                            ageHolder: 0,
+                            ticketDate: new Date(),
+                        });
+                        setPurchaseTicketModal(false);
+                        toast(
+                            `Tiket ${res.data.purchasedTicket.ticketKind} untuk ${res.data.purchasedTicket.ticketNameHolder} berhasil dibeli`,
+                            {
+                                type: "success",
+                            },
+                        );
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        toast("Terjadi kesalahan saat membeli tiket", {
+                            type: "error",
+                        });
+                    });
+            } catch (error) {
+                toast("Terjadi kesalahan saat membeli tiket", {
+                    type: "error",
+                });
+            }
+        } else {
+            toast("Anda harus login terlebih dahulu untuk membeli tiket", {
+                type: "error",
+            });
+        }
+    };
+
     useEffect(() => {
         window.scrollTo(0, 0);
         axios
@@ -44,12 +139,152 @@ function DestinationView() {
     const handleTabClick = (tabName) => setActiveTab(tabName);
     return (
         <>
+            <ToastContainer />
+            <Modal toggle={purchaseTicketModal}>
+                <div className="flex w-[350px] flex-col p-4 md:w-[800px] md:p-8">
+                    <div className="flex justify-between">
+                        <h1 className="w-full text-lg font-semibold">
+                            Beli Tiket Wisata di{" "}
+                            {dataLoaded ? (
+                                destinationData.destinationName
+                            ) : (
+                                <Skeleton />
+                            )}
+                        </h1>
+                        <button
+                            onClick={() => {
+                                setPurchaseTicketModal(false);
+                            }}
+                            className="aspect-square h-8 w-8 items-center rounded-md bg-red-600 align-middle text-white transition duration-300 hover:bg-red-900"
+                        >
+                            <FontAwesomeIcon
+                                icon={faXmark}
+                                style={{
+                                    color: "#ffffff",
+                                }}
+                            />
+                        </button>
+                    </div>
+                    <hr className="my-2" />
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-4">
+                            <div className="gap flex flex-col">
+                                <p className="text-md text-gray-500">Mitra</p>
+                                <p className="text-md font-bold text-gray-900">
+                                    {partnerData.partnerName}
+                                </p>
+                            </div>
+                            <div className="gap flex flex-col">
+                                <p className="text-md text-gray-500">
+                                    Jenis Tiket
+                                </p>
+                                <p className="text-md font-bold text-gray-900">
+                                    {purchaseTicketData.ticketName}
+                                </p>
+                            </div>
+                            <div className="gap flex flex-col">
+                                <p className="text-md text-gray-500">
+                                    Deskripsi Tiket
+                                </p>
+                                <p className="text-md font-bold text-gray-900">
+                                    {purchaseTicketData.ticketDescription}
+                                </p>
+                            </div>
+                            <div className="gap flex flex-col">
+                                <p className="text-md text-gray-500">
+                                    Harga Tiket
+                                </p>
+                                <p className="text-md font-bold text-gray-900">
+                                    {new Intl.NumberFormat("id-ID", {
+                                        style: "currency",
+                                        currency: "IDR",
+                                    }).format(purchaseTicketData.ticketPrice)}
+                                    /tiket
+                                </p>
+                            </div>
+                        </div>
+                        <hr className="my-2" />
+                        <form
+                            onSubmit={handlePurchaseSubmission}
+                            className="flex flex-col gap-4"
+                        >
+                            <div className="gap flex flex-col">
+                                <p className="text-md font-bold text-gray-900">
+                                    Isi Data Pembeli Tiket
+                                </p>
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <label
+                                    className="text-sm font-bold text-gray-500"
+                                    htmlFor="nameHolder"
+                                >
+                                    Nama Pemegang Tiket
+                                </label>
+                                <div className="flex items-center gap-2 rounded-md border px-4 py-2">
+                                    <input
+                                        required
+                                        className="w-full border-0 outline-none"
+                                        name="nameHolder"
+                                        type="text"
+                                        value={purchaseTicketData.nameHolder}
+                                        placeholder="Masukkan nama pemegang tiket"
+                                        onChange={onTicketFormChange}
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <label
+                                    className="text-sm font-bold text-gray-500"
+                                    htmlFor="ageHolder"
+                                >
+                                    Umur Pemegang Tiket
+                                </label>
+                                <div className="flex items-center gap-2 rounded-md border px-4 py-2">
+                                    <input
+                                        required
+                                        className="w-full border-0 outline-none"
+                                        name="ageHolder"
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={purchaseTicketData.ageHolder}
+                                        placeholder="Masukkan umur pemegang tiket"
+                                        onChange={onTicketFormChange}
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <label
+                                    className="text-sm font-bold text-gray-500"
+                                    htmlFor="ticketDate"
+                                >
+                                    Tanggal Pembelian Tiket
+                                </label>
+                                <div className="flex items-center gap-2 rounded-md border px-4 py-2">
+                                    <DatePicker
+                                        required
+                                        className="w-full rounded-md border-0 bg-white p-2 text-gray-800 outline-none"
+                                        selected={purchaseTicketData.ticketDate}
+                                        onChange={handleDateChange}
+                                        dateFormat="yyyy-MM-dd"
+                                    />
+                                </div>
+                            </div>
+                            <hr className="my-2" />
+                            <div className="flex w-full justify-end">
+                                <button
+                                    type="submit"
+                                    className="w-fit rounded-md bg-red-orange-600 px-4 py-2 text-white transition duration-300 hover:bg-red-orange-950"
+                                >
+                                    Konfirmasi Pembelian
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </Modal>
             <div className="flex h-full flex-col gap-8 overflow-hidden bg-gray-100 px-6 py-2 pt-24">
-                <p className="rounded-md border border-green-400 bg-green-200 p-4">
-                    WisNu sedang membuka pendaftaran untuk Mitra atau
-                    penyelenggara destinasi wisata, silahkan untuk melakukan
-                    pendaftaran untuk proses registrasi yang cepat.
-                </p>
+                <AnnouncmentCenter />
                 <div className="flex flex-col gap-4">
                     <DestinationSlick
                         destinationData={
@@ -235,7 +470,10 @@ function DestinationView() {
                                     destinationData.destinationTicket.map(
                                         (ticket, index) => (
                                             <>
-                                                <div className="flex flex-col rounded-md border border-gray-300 p-3">
+                                                <div
+                                                    key={index}
+                                                    className="flex flex-col rounded-md border border-gray-300 p-3"
+                                                >
                                                     <p className="w-full font-bold">
                                                         {ticket.ticketName}
                                                     </p>
@@ -258,7 +496,57 @@ function DestinationView() {
                                                                 ticket.ticketPrice,
                                                             )}
                                                         </p>
-                                                        <button className="flex items-center justify-center rounded-full  bg-red-orange-600 px-2 py-1 text-white">
+                                                        <button
+                                                            onClick={() => {
+                                                                if (
+                                                                    sessionToken
+                                                                ) {
+                                                                    if (
+                                                                        ticket.ticketQuota >
+                                                                        0
+                                                                    ) {
+                                                                        setPurchaseTicketModal(
+                                                                            true,
+                                                                        );
+                                                                        setPurchaseTicketData(
+                                                                            {
+                                                                                ticketName:
+                                                                                    ticket.ticketName,
+                                                                                ticketPrice:
+                                                                                    ticket.ticketPrice,
+                                                                                ticketDescription:
+                                                                                    ticket.ticketDescription,
+                                                                                destinationId:
+                                                                                    destinationId,
+                                                                                ticketId:
+                                                                                    ticket._id,
+                                                                                nameHolder:
+                                                                                    "",
+                                                                                ageHolder:
+                                                                                    "",
+                                                                                ticketDate:
+                                                                                    "",
+                                                                            },
+                                                                        );
+                                                                    } else {
+                                                                        toast(
+                                                                            "Mohon maaf, tiket sudah habis. Silahkan pilih tiket lainnya",
+                                                                            {
+                                                                                type: "error",
+                                                                            },
+                                                                        );
+                                                                    }
+                                                                } else {
+                                                                    toast(
+                                                                        "Anda harus login terlebih dahulu untuk membeli tiket",
+                                                                        {
+                                                                            type: "error",
+                                                                        },
+                                                                    );
+                                                                }
+                                                            }}
+                                                            className="flex items-center justify-center rounded-full  bg-red-orange-600 px-2 py-1 text-white"
+                                                        >
                                                             Beli tiket
                                                         </button>
                                                     </div>

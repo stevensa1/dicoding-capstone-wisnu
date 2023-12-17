@@ -93,6 +93,11 @@ const DestinationModel = mongoose.Schema({
     destinationFacility: [FacilitySchema],
     destinationOpenTime: [OpenTimeSchema],
     destinationTicket: [TicketSchema],
+    destinationSales: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
     destinationViews: {
         type: Number,
         required: true,

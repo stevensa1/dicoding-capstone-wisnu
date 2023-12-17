@@ -19,7 +19,7 @@ GET https://localhost/api/user
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzk0ZjE5NmY2NTM5YzIxNWJhOWY0NSIsInVzZXJOYW1lIjoic3RldmVuc2ExMiIsImVtYWlsQWRkcmVzcyI6InN0ZXZlbi5hcHBzLnBhaWRAZ21haWwuY29tIiwiaWF0IjoxNzAyNDU1MTUwLCJleHAiOjE3MDI1NDE1NTB9.oZe2-9uL7CnFGVnsc1IXb91EzWdA6ZnbRvAzjuCL7Ew
 
 ###
-GET http://192.168.1.2:3001/api/partner/destination/
+GET http://192.168.1.2:3001/api/destination/
 
 ###
 POST https://api.wisnu.store/api/validation/email
@@ -36,3 +36,6 @@ content-type: application/json
 {
     "partnerUUID": "602d8778-c8f0-4fb6-8bb8-acd1bd275b5a"
 }
+
+###
+GET http://192.168.1.2:3001/api/destination/partner/657cefd24d870e45c19b027f

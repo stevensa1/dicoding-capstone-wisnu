@@ -9,7 +9,6 @@ function NewsSlick() {
     const newsData = [
         { id: 1, image: "images/promo/promo-1.jpg" },
         { id: 2, image: "images/promo/promo-2.jpg" },
-        { id: 3, image: "images/promo/promo-3.jpg" },
     ];
 
     const miniBoxClick = (id) => {

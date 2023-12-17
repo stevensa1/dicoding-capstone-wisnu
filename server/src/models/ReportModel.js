@@ -18,11 +18,11 @@ const ReportSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
-    reportUser: {
+    reportUserId: {
         type: String,
         required: true,
     },
-    reportPartner: {
+    reportPartnerId: {
         type: String,
         required: true,
     },

@@ -8,6 +8,8 @@ import ApplicationLoginPage from "./pages/Application/LoginAndRegister/LoginPage
 import ApplicationRegisterPage from "./pages/Application/LoginAndRegister/RegisterPage";
 import DestinationView from "./pages/Application/ViewDestination";
 import ApplicationLayout from "./layout/ApplicationLayout";
+import MyTicket from "./pages/Application/MyTicket";
+import TransactionHistory from "./pages/Application/TransactionHistory";
 
 function App() {
     return (
@@ -16,8 +18,13 @@ function App() {
                 <Route path="/" element={<LandingHomePage />} />
                 <Route path="/login" element={<ApplicationLoginPage />} />
                 <Route path="/register" element={<ApplicationRegisterPage />} />
+                <Route path="/home" element={<ApplicationHome />} />
                 <Route element={<ApplicationLayout />}>
-                    <Route path="/home" element={<ApplicationHome />} />
+                    <Route path="/my/ticket" element={<MyTicket />} />
+                    <Route
+                        path="/my/transactions"
+                        element={<TransactionHistory />}
+                    />
                     <Route
                         path="/destination/:destinationId"
                         element={<DestinationView />}

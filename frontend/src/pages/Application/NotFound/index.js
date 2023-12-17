@@ -1,6 +1,4 @@
 import React from "react";
-import ApplicationNavigationBar from "../../../components/Application/NavigationBar";
-import LandingPageFooter from "../../../components/landingPage/Footer";
 import { useNavigate } from "react-router-dom";
 import NotFoundSVG from "../../../components/SVGs/NotFoundSVG";
 

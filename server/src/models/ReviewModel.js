@@ -18,6 +18,14 @@ const ReviewSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    reviewUserId: {
+        type: String,
+        required: true,
+    },
+    reviewPartnerId: {
+        type: String,
+        required: true,
+    },
     reviewUser: {
         type: String,
         required: true,
@@ -34,6 +42,7 @@ const ReviewSchema = mongoose.Schema({
     reviewReply: {
         type: String,
         required: false,
+        default: '',
     },
 });
 

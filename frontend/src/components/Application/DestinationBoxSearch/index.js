@@ -3,7 +3,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Link } from "react-router-dom";
 
-function DestinationBox({
+function DestinationBoxSearch({
     url = "/",
     image,
     name,
@@ -56,4 +56,4 @@ function DestinationBox({
     );
 }
 
-export default DestinationBox;
+export default DestinationBoxSearch;
