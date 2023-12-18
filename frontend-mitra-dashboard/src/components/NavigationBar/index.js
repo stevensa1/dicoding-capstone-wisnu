@@ -79,7 +79,7 @@ function NavigationBar({ activeMenu = "Dashboard" }) {
                                 <Skeleton />
                             )}
                         </div>
-                        <div className="md:font-sm font-poppins text-xs tracking-tight text-red-900">
+                        <div className="md:font-sm hidden font-poppins text-xs tracking-tight text-red-900 md:flex">
                             {partnerLoggedIn ? (
                                 <>{partnerData.emailAddress}</>
                             ) : (
