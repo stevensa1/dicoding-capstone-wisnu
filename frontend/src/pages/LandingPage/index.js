@@ -17,6 +17,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import NavigationBar from "../../components/landingPage/NavigationBar";
 import LandingPageFooter from "../../components/landingPage/Footer";
+import { Link } from "react-router-dom";
 
 function LandingHomePage() {
     const [currentSection, setCurrentSection] = useState("Beranda");
@@ -151,9 +152,12 @@ function LandingHomePage() {
                                 ada di Nusantara atau Indonesia.
                             </p>
                         </div>
-                        <button className="w-fit rounded-md bg-red-orange-600 px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950">
-                            Baca Lebih Lanjut
-                        </button>
+                        <Link
+                            to="/home"
+                            className="w-fit rounded-md bg-red-orange-600 px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950"
+                        >
+                            Menuju Aplikasi WisNu
+                        </Link>
                     </div>
                     <div className="flex w-full flex-col gap-5 lg:w-1/2">
                         <p className="text-md w-fit grow-0 rounded-sm font-medium tracking-wider text-black">
@@ -712,8 +716,7 @@ function LandingHomePage() {
                                 Product Manager
                             </p>
                             <div className="w-full text-center text-sm font-light text-gray-700">
-                                Lorem ipsum dolor sit amet consectetur
-                                adipisicing elit. Quisquam, voluptatum.
+                                Bertanggung jawab dalam pengembangan produk.
                             </div>
                         </div>
                         <div className="flex w-full flex-col items-center gap-2 p-4 md:w-1/3">
@@ -735,8 +738,8 @@ function LandingHomePage() {
                                 Product Designer
                             </p>
                             <div className="w-full text-center text-sm font-light text-gray-700">
-                                Lorem ipsum dolor sit amet consectetur
-                                adipisicing elit. Quisquam, voluptatum.
+                                Memastikan tampilan aplikasi yang menarik dan
+                                mudah digunakan.
                             </div>
                         </div>
                         <div className="flex w-full flex-col items-center gap-2 p-4 md:w-1/3">
@@ -758,8 +761,7 @@ function LandingHomePage() {
                                 Front-End Developer
                             </p>
                             <div className="w-full text-center text-sm font-light text-gray-700">
-                                Lorem ipsum dolor sit amet consectetur
-                                adipisicing elit. Quisquam, voluptatum.
+                                Membangun halaman yang menarik dan interaktif
                             </div>
                         </div>
                         <div className="flex w-full flex-col items-center gap-2 p-4 md:w-1/3">
@@ -781,8 +783,7 @@ function LandingHomePage() {
                                 System Management
                             </p>
                             <div className="w-full text-center text-sm font-light text-gray-700">
-                                Lorem ipsum dolor sit amet consectetur
-                                adipisicing elit. Quisquam, voluptatum.
+                                Bertanggung jawab dalam pengelolaan sistem.
                             </div>
                         </div>
                         <div className="flex w-full flex-col items-center gap-2 p-4 md:w-1/3">
@@ -804,8 +805,7 @@ function LandingHomePage() {
                                 System Management
                             </p>
                             <div className="w-full text-center text-sm font-light text-gray-700">
-                                Lorem ipsum dolor sit amet consectetur
-                                adipisicing elit. Quisquam, voluptatum.
+                                Bertanggung jawab dalam pengelolaan sistem.
                             </div>
                         </div>
                     </div>

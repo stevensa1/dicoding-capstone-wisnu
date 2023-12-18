@@ -34,7 +34,7 @@ PUT https://api.wisnu.store/api/partner/request
 content-type: application/json
 
 {
-    "partnerUUID": "602d8778-c8f0-4fb6-8bb8-acd1bd275b5a"
+    "partnerUUID": "4038b167-4d0f-4194-b1d6-cc398bdf6b1e"
 }
 
 ###
