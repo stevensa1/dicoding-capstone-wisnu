@@ -8,6 +8,7 @@ import {
     faClipboardList,
     faHeadset,
 } from "@fortawesome/free-solid-svg-icons";
+import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DestinationBox from "../../../components/Application/DestinationBox";

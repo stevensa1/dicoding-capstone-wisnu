@@ -1,6 +1,14 @@
 import React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faFacebook,
+    faInstagram,
+    faLinkedin,
+    faTiktok,
+    faXTwitter,
+} from "@fortawesome/free-brands-svg-icons";
 
 function LandingPageFooter() {
     return (
@@ -24,10 +32,41 @@ function LandingPageFooter() {
                             </p>
                         </div>
                         <div className="flex gap-2 md:gap-4">
-                            <button className="h-12 w-12 rounded-full bg-gray-500 transition duration-300 hover:bg-red-orange-600"></button>
-                            <button className="h-12 w-12 rounded-full bg-gray-500 transition duration-300 hover:bg-red-orange-600"></button>
-                            <button className="h-12 w-12 rounded-full bg-gray-500 transition duration-300 hover:bg-red-orange-600"></button>
-                            <button className="h-12 w-12 rounded-full bg-gray-500 transition duration-300 hover:bg-red-orange-600"></button>
+                            <button className="h-12 w-12 rounded-full border border-gray-500 transition duration-300 hover:bg-red-orange-200">
+                                <FontAwesomeIcon
+                                    icon={faFacebook}
+                                    size="2xl"
+                                    className="text-gray-500 transition duration-300 hover:text-red-orange-800"
+                                />
+                            </button>
+                            <button className="h-12 w-12 rounded-full border border-gray-500 transition duration-300 hover:bg-red-orange-200">
+                                <FontAwesomeIcon
+                                    icon={faInstagram}
+                                    size="2xl"
+                                    className="text-gray-500 transition duration-300 hover:text-red-orange-800"
+                                />
+                            </button>
+                            <button className="h-12 w-12 rounded-full border border-gray-500 transition duration-300 hover:bg-red-orange-200">
+                                <FontAwesomeIcon
+                                    icon={faXTwitter}
+                                    size="2xl"
+                                    className="text-gray-500 transition duration-300 hover:text-red-orange-800"
+                                />
+                            </button>
+                            <button className="h-12 w-12 rounded-full border border-gray-500 transition duration-300 hover:bg-red-orange-200">
+                                <FontAwesomeIcon
+                                    icon={faTiktok}
+                                    size="2xl"
+                                    className="text-gray-500 transition duration-300 hover:text-red-orange-800"
+                                />
+                            </button>
+                            <button className="h-12 w-12 rounded-full border border-gray-500 transition duration-300 hover:bg-red-orange-200">
+                                <FontAwesomeIcon
+                                    icon={faLinkedin}
+                                    size="2xl"
+                                    className="text-gray-500 transition duration-300 hover:text-red-orange-800"
+                                />
+                            </button>
                         </div>
                     </div>
                     <div className="flex justify-between gap-4">
