@@ -20,6 +20,7 @@ import LandingPageFooter from "../../components/landingPage/Footer";
 import { Link } from "react-router-dom";
 
 function LandingHomePage() {
+    // eslint-disable-next-line no-unused-vars
     const [currentSection, setCurrentSection] = useState("Beranda");
     const [statLoad, setStatLoad] = useState(false);
     const [siteStats, setSiteStats] = useState({});

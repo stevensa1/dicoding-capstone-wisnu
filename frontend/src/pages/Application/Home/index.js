@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import DestinationBox from "../../../compofnents/Application/DestinationBox";
+import DestinationBox from "../../../components/Application/DestinationBox";
 import NewsSlick from "../../../components/Application/NewsSlick";
 import AnnouncmentCenter from "../../../components/Application/AnnouncmentCenter";
 import ApplicationNavigationBar from "../../../components/Application/NavigationBar";
