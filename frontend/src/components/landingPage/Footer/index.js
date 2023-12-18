@@ -128,7 +128,7 @@ function LandingPageFooter() {
                 </div>
                 <div className="bg-gray-200 px-8 py-8 text-center">
                     © Copyright <b>WisNu</b>, All Rights Reserved, designed by
-                    team capstone CODE-TEAM
+                    team capstone <b>C523-PS033</b>
                 </div>
             </div>
         </>

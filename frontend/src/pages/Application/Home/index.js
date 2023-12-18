@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import {
     faCompass,
     faTicket,
@@ -10,6 +8,8 @@ import {
     faClipboardList,
     faHeadset,
 } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import DestinationBox from "../../../components/Application/DestinationBox";
 import NewsSlick from "../../../components/Application/NewsSlick";
 import AnnouncmentCenter from "../../../components/Application/AnnouncmentCenter";

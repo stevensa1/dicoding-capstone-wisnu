@@ -6,15 +6,25 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faEnvelope,
+    faLocationDot,
+    faPeopleGroup,
+    faPhone,
+} from "@fortawesome/free-solid-svg-icons";
 import NavigationBar from "../../components/landingPage/NavigationBar";
 import LandingPageFooter from "../../components/landingPage/Footer";
 
 function LandingHomePage() {
+    const [currentSection, setCurrentSection] = useState("Beranda");
     const [statLoad, setStatLoad] = useState(false);
     const [siteStats, setSiteStats] = useState({});
     useEffect(() => {
         AOS.init();
-        window.scrollTo(0, 0);
+        // window.scrollTo(0, 0);
     }, []);
 
     useEffect(() => {
@@ -32,14 +42,14 @@ function LandingHomePage() {
         <>
             <ToastContainer />
             <div className="fixed inset-x-0 top-0 z-50 flex flex-col">
-                <NavigationBar />
+                <NavigationBar activeMenu={currentSection} />
             </div>
             <div className="flex flex-col bg-gray-100">
                 <div
                     className="flex h-screen flex-col justify-center gap-2 bg-black/50 bg-cover bg-center px-8 py-36 text-white md:px-16 md:pt-48"
                     style={{
                         backgroundImage:
-                            'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/images/landing-bg-min.jpg")',
+                            'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/images/landing-bg.webp")',
                     }}
                 >
                     <h1
@@ -73,27 +83,54 @@ function LandingHomePage() {
                 </div>
                 <div className="flex flex-col gap-4 bg-white px-8 py-8 md:px-16">
                     <div className="flex flex-wrap justify-between gap-4 transition-all duration-300">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white">
+                        <div
+                            data-aos="fade-up"
+                            data-aos-anchor-placement="center-bottom"
+                            className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white"
+                        >
                             #1
                         </div>
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white">
+                        <div
+                            data-aos="fade-up"
+                            data-aos-anchor-placement="center-bottom"
+                            className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white"
+                        >
                             #2
                         </div>
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white">
+                        <div
+                            data-aos="fade-up"
+                            data-aos-anchor-placement="center-bottom"
+                            className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white"
+                        >
                             #3
                         </div>
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white">
+                        <div
+                            data-aos="fade-up"
+                            data-aos-anchor-placement="center-bottom"
+                            className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white"
+                        >
                             #4
                         </div>
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white">
+                        <div
+                            data-aos="fade-up"
+                            data-aos-anchor-placement="center-bottom"
+                            className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white"
+                        >
                             #5
                         </div>
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white">
+                        <div
+                            data-aos="fade-up"
+                            data-aos-anchor-placement="center-bottom"
+                            className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-400 text-lg font-bold transition duration-300 hover:bg-red-orange-700 hover:text-white"
+                        >
                             #6
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col items-center gap-4 px-8 py-8 md:px-16 lg:flex-row">
+                <div
+                    id="tentang"
+                    className="flex flex-col items-center gap-4 px-8 py-8 md:px-16 lg:flex-row"
+                >
                     <div className="flex w-full flex-col gap-5 lg:w-1/2">
                         <p className="text-md w-fit grow-0 rounded-sm bg-red-orange-200 px-4 py-2 font-medium tracking-wider text-red-orange-700">
                             Tentang Kami
@@ -237,7 +274,7 @@ function LandingHomePage() {
                     className="flex flex-col items-center justify-between gap-4 bg-cover bg-center px-16 py-32 text-white md:flex-row md:py-28"
                     style={{
                         backgroundImage:
-                            'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/images/landing-section-number.jpg")',
+                            'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/images/landing-section-number.webp")',
                     }}
                 >
                     <div className="flex flex-col items-center gap-2">
@@ -611,6 +648,267 @@ function LandingHomePage() {
                     >
                         Jelajah Nusantara
                     </a>
+                </div>
+                <div
+                    id="tim"
+                    className="flex flex-col gap-4 px-8 py-8 md:px-16"
+                >
+                    <div className="flex flex-col items-center justify-center gap-4">
+                        <div className="flex items-center justify-center gap-2 md:gap-4">
+                            <svg
+                                width="75"
+                                height="4"
+                                viewBox="0 0 75 4"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M4 3.5H164"
+                                    stroke="#A01B14"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                />
+                            </svg>
+                            <h1 className="text-center text-3xl font-bold">
+                                Tim Kami
+                            </h1>
+                            <svg
+                                width="75"
+                                height="4"
+                                viewBox="0 0 75 4"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M4 3.5H164"
+                                    stroke="#A01B14"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                />
+                            </svg>
+                        </div>
+                        <p className="text-center text-lg">
+                            Perkenalkan Tim yang ahli pada bidang Digitalisasi
+                            Wisata Nusantara
+                        </p>
+                    </div>
+                    <div className="flex flex-col justify-center md:flex-row md:flex-wrap">
+                        <div className="flex w-full flex-col items-center gap-2 p-4 md:w-1/3">
+                            <div className="flex w-fit items-center justify-center rounded-full bg-white p-2 transition duration-300 ease-out hover:shadow-lg">
+                                <LazyLoadImage
+                                    src={`https://${process.env.REACT_APP_BUCKET_URL}/team/team_steven.jpg`}
+                                    alt="Placeholder"
+                                    className="h-48 w-48 rounded-full object-cover object-center"
+                                    effect="blur"
+                                    width={192}
+                                    height={192}
+                                />
+                                {/* IMG CONTENT USING LAZY IMAGE */}
+                            </div>
+                            <h1 className="w-full text-center text-lg font-bold">
+                                Steven Soewignjo
+                            </h1>
+                            <p className="w-full text-center italic text-gray-500">
+                                Product Manager
+                            </p>
+                            <div className="w-full text-center text-sm font-light text-gray-700">
+                                Lorem ipsum dolor sit amet consectetur
+                                adipisicing elit. Quisquam, voluptatum.
+                            </div>
+                        </div>
+                        <div className="flex w-full flex-col items-center gap-2 p-4 md:w-1/3">
+                            <div className="flex w-fit items-center justify-center rounded-full bg-white p-2 transition duration-300 ease-out hover:shadow-lg">
+                                <LazyLoadImage
+                                    src={`https://${process.env.REACT_APP_BUCKET_URL}/team/team_ammar.png`}
+                                    alt="Placeholder"
+                                    className="h-48 w-48 rounded-full object-cover object-center"
+                                    effect="blur"
+                                    width={192}
+                                    height={192}
+                                />
+                                {/* IMG CONTENT USING LAZY IMAGE */}
+                            </div>
+                            <h1 className="w-full text-center text-lg font-bold">
+                                Muammar Najmi S
+                            </h1>
+                            <p className="w-full text-center italic text-gray-500">
+                                Product Designer
+                            </p>
+                            <div className="w-full text-center text-sm font-light text-gray-700">
+                                Lorem ipsum dolor sit amet consectetur
+                                adipisicing elit. Quisquam, voluptatum.
+                            </div>
+                        </div>
+                        <div className="flex w-full flex-col items-center gap-2 p-4 md:w-1/3">
+                            <div className="flex w-fit items-center justify-center rounded-full bg-white p-2 transition duration-300 ease-out hover:shadow-lg">
+                                <LazyLoadImage
+                                    src={`https://${process.env.REACT_APP_BUCKET_URL}/team/team_athaya.jpg`}
+                                    alt="Placeholder"
+                                    className="h-48 w-48 rounded-full object-cover object-center"
+                                    effect="blur"
+                                    width={192}
+                                    height={192}
+                                />
+                                {/* IMG CONTENT USING LAZY IMAGE */}
+                            </div>
+                            <h1 className="w-full text-center text-lg font-bold">
+                                Athaya Aqilah
+                            </h1>
+                            <p className="w-full text-center italic text-gray-500">
+                                Front-End Developer
+                            </p>
+                            <div className="w-full text-center text-sm font-light text-gray-700">
+                                Lorem ipsum dolor sit amet consectetur
+                                adipisicing elit. Quisquam, voluptatum.
+                            </div>
+                        </div>
+                        <div className="flex w-full flex-col items-center gap-2 p-4 md:w-1/3">
+                            <div className="flex w-fit items-center justify-center rounded-full bg-white p-2 transition duration-300 ease-out hover:shadow-lg">
+                                <LazyLoadImage
+                                    src={`https://${process.env.REACT_APP_BUCKET_URL}/team/team_annisa.png`}
+                                    alt="Placeholder"
+                                    className="h-48 w-48 rounded-full object-cover object-center"
+                                    effect="blur"
+                                    width={192}
+                                    height={192}
+                                />
+                                {/* IMG CONTENT USING LAZY IMAGE */}
+                            </div>
+                            <h1 className="w-full text-center text-lg font-bold">
+                                Annisa Rachmania Putri
+                            </h1>
+                            <p className="w-full text-center italic text-gray-500">
+                                System Management
+                            </p>
+                            <div className="w-full text-center text-sm font-light text-gray-700">
+                                Lorem ipsum dolor sit amet consectetur
+                                adipisicing elit. Quisquam, voluptatum.
+                            </div>
+                        </div>
+                        <div className="flex w-full flex-col items-center gap-2 p-4 md:w-1/3">
+                            <div className="flex w-fit items-center justify-center rounded-full bg-white p-2 transition duration-300 ease-out hover:shadow-lg">
+                                <LazyLoadImage
+                                    src={`https://${process.env.REACT_APP_BUCKET_URL}/team/team_raihan.jpg`}
+                                    alt="Placeholder"
+                                    className="h-48 w-48 rounded-full object-cover object-center"
+                                    effect="blur"
+                                    width={192}
+                                    height={192}
+                                />
+                                {/* IMG CONTENT USING LAZY IMAGE */}
+                            </div>
+                            <h1 className="w-full text-center text-lg font-bold">
+                                Raihan Herlambang
+                            </h1>
+                            <p className="w-full text-center italic text-gray-500">
+                                System Management
+                            </p>
+                            <div className="w-full text-center text-sm font-light text-gray-700">
+                                Lorem ipsum dolor sit amet consectetur
+                                adipisicing elit. Quisquam, voluptatum.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    id="kontak"
+                    className="flex flex-col gap-4 px-8 py-8 md:px-16"
+                >
+                    <div className="flex flex-col items-center justify-center gap-4">
+                        <div className="flex items-center justify-center gap-2 md:gap-4">
+                            <svg
+                                width="75"
+                                height="4"
+                                viewBox="0 0 75 4"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M4 3.5H164"
+                                    stroke="#A01B14"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                />
+                            </svg>
+                            <h1 className="text-center text-3xl font-bold">
+                                Kontak Kami
+                            </h1>
+                            <svg
+                                width="75"
+                                height="4"
+                                viewBox="0 0 75 4"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M4 3.5H164"
+                                    stroke="#A01B14"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                />
+                            </svg>
+                        </div>
+                        <p className="text-center text-lg">
+                            Memiliki pertanyaan atau saran? Hubungi kami!
+                        </p>
+                    </div>
+                    <div className="flex flex-col justify-center md:flex-row md:flex-wrap">
+                        <div className="m-2 flex w-full flex-col items-start gap-4 rounded-md bg-white p-6 shadow-md transition duration-300 ease-out hover:shadow-2xl md:w-1/3">
+                            <FontAwesomeIcon
+                                icon={faLocationDot}
+                                size="2xl"
+                                style={{ color: "#e6721c" }}
+                            />
+                            <div>
+                                <h1 className="text-2xl font-bold">Alamat</h1>
+                                <p className="text-gray-700">
+                                    Surabaya, Jawa Timur, Indonesia
+                                </p>
+                            </div>
+                        </div>
+                        <div className="m-2 flex w-full flex-col items-start gap-4 rounded-md bg-white p-6 shadow-md transition duration-300 ease-out hover:shadow-2xl md:w-1/3">
+                            <FontAwesomeIcon
+                                icon={faPhone}
+                                size="2xl"
+                                style={{ color: "#e6721c" }}
+                            />
+                            <div>
+                                <h1 className="text-2xl font-bold">
+                                    Nomor Kami
+                                </h1>
+                                <p className="text-gray-700">
+                                    +62 877-0303-2800
+                                </p>
+                            </div>
+                        </div>
+                        <div className="m-2 flex w-full flex-col items-start gap-4 rounded-md bg-white p-6 shadow-md transition duration-300 ease-out hover:shadow-2xl md:w-1/3">
+                            <FontAwesomeIcon
+                                icon={faEnvelope}
+                                size="2xl"
+                                style={{ color: "#e6721c" }}
+                            />
+                            <div>
+                                <h1 className="text-2xl font-bold">Email</h1>
+                                <p className="text-gray-700">
+                                    steven.soewignyo@gmail.com
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="m-2 flex w-full flex-col items-start gap-4 rounded-md bg-white p-6 shadow-md transition duration-300 ease-out hover:shadow-2xl md:w-1/3">
+                            <FontAwesomeIcon
+                                icon={faPeopleGroup}
+                                size="2xl"
+                                style={{ color: "#e6721c" }}
+                            />
+                            <div>
+                                <h1 className="text-2xl font-bold">
+                                    Kode Tim Dicoding
+                                </h1>
+                                <p className="text-gray-700">C523-PS033</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div className="flex flex-col">

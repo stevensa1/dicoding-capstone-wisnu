@@ -57,7 +57,7 @@ function ApplicationSearchQueryResult() {
                                     0,
                                     100,
                                 )}
-                                rating={4}
+                                rating={destination.destinationAverageRating}
                             />
                         ))
                     )}

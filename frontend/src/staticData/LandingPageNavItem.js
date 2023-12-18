@@ -1,22 +1,18 @@
 export const navigationList = [
     {
-        name: 'Beranda',
-        link: '/',
+        name: "Beranda",
+        link: "/",
     },
     {
-        name: 'Tentang',
-        link: '/about',
+        name: "Tentang",
+        link: "#tentang",
     },
     {
-        name: 'Mitra',
-        link: '/partner',
+        name: "Tim",
+        link: "#tim",
     },
     {
-        name: 'Tim',
-        link: '/team',
-    },
-    {
-        name: 'Kontak',
-        link: '/contact',
+        name: "Kontak",
+        link: "#kontak",
     },
 ];

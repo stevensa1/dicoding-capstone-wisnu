@@ -228,6 +228,7 @@ function DestinationView() {
             )
             .then((response) => {
                 setDestinationData(response.data.destination);
+                document.title = `${response.data.destination.destinationName} - Wisnu`;
                 axios
                     .get(
                         `${process.env.REACT_APP_BACKEND_HOST}/api/partner/${response.data.destination.destinationManagerPartnerId}`,

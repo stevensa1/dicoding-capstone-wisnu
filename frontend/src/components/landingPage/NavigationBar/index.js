@@ -45,8 +45,8 @@ function NavigationBar({ activeMenu = "Beranda" }) {
                 <h1 className="flex text-xl font-bold md:hidden">WisNu</h1>
                 <div className="hidden gap-5 md:flex">
                     {navigationList.map((item, index) => (
-                        <Link
-                            to={item.link}
+                        <a
+                            href={item.link}
                             key={index}
                             className={`px-2 ${
                                 activeMenu === item.name
@@ -55,12 +55,15 @@ function NavigationBar({ activeMenu = "Beranda" }) {
                             }`}
                         >
                             {item.name}
-                        </Link>
+                        </a>
                     ))}
                 </div>
                 <div className="flex items-center gap-3">
                     <Link
                         to="/home"
+                        onClick={() => {
+                            window.scrollTo(0, 0);
+                        }}
                         className="rounded-sm bg-red-orange-600 px-4 py-2 text-white transition duration-500 hover:bg-red-orange-950"
                     >
                         Jelajah Nusantara
