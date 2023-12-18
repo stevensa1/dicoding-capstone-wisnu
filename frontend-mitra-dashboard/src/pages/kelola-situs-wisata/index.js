@@ -7,6 +7,11 @@ import { Link } from "react-router-dom";
 import Modal from "../../components/Modal";
 import axios from "axios";
 import Cookie from "js-cookie";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function KelolaSitusWisata() {
     const sessionToken = Cookie.get("partnerSessionToken");
@@ -14,25 +19,6 @@ function KelolaSitusWisata() {
         document.title = "WisNu Partner - Kelola Situs Wisata";
     }, []);
     const [destinations, setDestinations] = useState([]);
-
-    useEffect(() => {
-        axios
-            .get(
-                `${process.env.REACT_APP_BACKEND_HOST}/access/api/destination/`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${sessionToken}`,
-                    },
-                },
-            )
-            .then((res) => {
-                setDestinations(res.data.destinations);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const [filesUploaded, setFilesUploaded] = useState(false);
     const [registrationModal, setRegistrationModal] = useState(false);
@@ -101,7 +87,7 @@ function KelolaSitusWisata() {
         ticketQuota: 0,
     };
     const [tickets, setTickets] = useState([initialTicket]);
-    const siteStats = [
+    const [siteStats, setSiteStats] = useState([
         {
             name: "Situs Wisata Terdaftar",
             value: "10",
@@ -122,7 +108,7 @@ function KelolaSitusWisata() {
             value: "3",
             backgroundColor: "rgba(252, 42, 31, 0.5)",
         },
-    ];
+    ]);
 
     const StatisticBox = ({ name, value, backgroundColor }) => {
         return (
@@ -143,24 +129,68 @@ function KelolaSitusWisata() {
         );
     };
 
+    useEffect(() => {
+        axios
+            .get(
+                `${process.env.REACT_APP_BACKEND_HOST}/access/api/destination/`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${sessionToken}`,
+                    },
+                },
+            )
+            .then((res) => {
+                setDestinations(res.data.destinations);
+                setSiteStats([
+                    {
+                        name: "Situs Wisata Terdaftar",
+                        value: res.data.destinations.length,
+                        backgroundColor: "rgba(78, 255, 234, 0.5)",
+                    },
+                    {
+                        name: "Situs Wisata Aktif",
+                        value: res.data.destinations.length,
+                        backgroundColor: "rgba(95, 255, 130, 0.5)",
+                    },
+                    {
+                        name: "Situs Wisata Nonaktif",
+                        value: 0,
+                        backgroundColor: "rgba(199, 199, 199, 0.5)",
+                    },
+                    {
+                        name: "Situs Wisata Perlu Perhatian",
+                        value: 0,
+                        backgroundColor: "rgba(252, 42, 31, 0.5)",
+                    },
+                ]);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const BoxWithImage = ({
         url = "/",
         title,
         location,
         category,
-        views,
-        likes,
-        favorites,
+        views = 0,
+        sales = 0,
+        rating = 0,
         imageHighlight,
     }) => {
         return (
             <Link
                 to={url}
                 target="_blank"
-                className="flex w-full flex-col items-start gap-4 md:flex-row"
+                className="flex w-full flex-row items-start gap-4"
             >
-                <img
-                    className="aspect-video w-full shrink-0 grow-0 rounded-md md:h-[135px] md:w-[240px]"
+                <LazyLoadImage
+                    effect="blur"
+                    width={240}
+                    height={135}
+                    className="h-[135px] w-[240px] rounded-md object-cover object-center"
                     src={`https://${process.env.REACT_APP_BUCKET_URL}${imageHighlight}`}
                     alt={`Gambar Wisata ${title}`}
                 />
@@ -169,22 +199,32 @@ function KelolaSitusWisata() {
                         <div className="text-xl font-semibold text-zinc-800">
                             {title}
                         </div>
-                        <div className="text-base font-normal tracking-tight text-zinc-800">
+                        <div className="font-normal tracking-tight text-zinc-800">
                             {location}
                         </div>
-                        <div className="text-base font-normal tracking-tight text-zinc-800">
+                        <div className="font-normal tracking-tight text-zinc-800">
                             {category}
                         </div>
+                        <div className="flex items-center gap-2 font-semibold text-zinc-800">
+                            <FontAwesomeIcon
+                                icon="fa-solid fa-star"
+                                size="md"
+                                className="text-yellow-400"
+                            />
+                            {rating.toFixed(2)}/10
+                        </div>
                     </div>
-                    <div className="flex h-full items-end justify-between">
-                        <div className="text-base font-semibold text-zinc-800">
+                    <div className="flex h-full items-end justify-end gap-4">
+                        <div className="flex items-center gap-2 text-zinc-800">
+                            <FontAwesomeIcon icon="fa-solid fa-eye" size="md" />
                             {views}
                         </div>
-                        <div className="text-base font-semibold text-zinc-800">
-                            {likes}
-                        </div>
-                        <div className="text-base font-semibold text-zinc-800">
-                            {favorites}
+                        <div className="flex items-center gap-2 text-zinc-800">
+                            <FontAwesomeIcon
+                                icon="fa-solid fa-file-invoice-dollar"
+                                size="md"
+                            />
+                            {sales}
                         </div>
                     </div>
                 </div>
@@ -194,46 +234,46 @@ function KelolaSitusWisata() {
 
     const BoxLinks = () => {
         return (
-            <div className="p-4 text-red-500 hover:text-red-700">
+            <div className="flex w-full flex-col gap-2 p-4 text-left text-red-500 hover:text-red-700">
                 <button
                     onClick={() => setRegistrationModal(true)}
-                    className="mb-2 block text-red-500 hover:text-red-700"
+                    className="block text-left text-red-500 hover:text-red-700"
                 >
                     Register Situs Wisata
                 </button>
                 <a
                     href="/"
-                    className="mb-2 block text-red-500 hover:text-red-700"
+                    className="block text-left text-red-500 hover:text-red-700"
                 >
                     Atur Status Situs Wisata
                 </a>
                 <a
                     href="/"
-                    className="mb-2 block text-red-500 hover:text-red-700"
+                    className="block text-left text-red-500 hover:text-red-700"
                 >
                     Kelola Tiket Situs Wisata
                 </a>
                 <a
                     href="/"
-                    className="mb-2 block text-red-500 hover:text-red-700"
+                    className="block text-left text-red-500 hover:text-red-700"
                 >
                     Kelola Kode Promo
                 </a>
                 <a
                     href="/"
-                    className="mb-2 block text-red-500 hover:text-red-700"
+                    className="block text-left text-red-500 hover:text-red-700"
                 >
                     Push Notifikasi Wisata
                 </a>
                 <a
                     href="/"
-                    className="mb-2 block text-red-500 hover:text-red-700"
+                    className="block text-left text-red-500 hover:text-red-700"
                 >
                     Push Notifikasi Pembeli
                 </a>
                 <a
                     href="/"
-                    className="mb-2 block text-red-500 hover:text-red-700"
+                    className="block text-left text-red-500 hover:text-red-700"
                 >
                     Hapus Situs Wisata
                 </a>
@@ -1243,9 +1283,11 @@ function KelolaSitusWisata() {
                                                         views={
                                                             destination.destinationViews
                                                         }
-                                                        rating="-/10"
-                                                        favorites={
-                                                            destination.destinationFavorites
+                                                        rating={
+                                                            destination.destinationAverageRating
+                                                        }
+                                                        sales={
+                                                            destination.destinationSales
                                                         }
                                                         imageHighlight={
                                                             destination

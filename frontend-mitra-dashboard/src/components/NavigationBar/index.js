@@ -2,9 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Cookie from "js-cookie";
-import { navigationList } from "./../data/navItem";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { navigationList } from "./../data/navItem";
 
 function NavigationBar({ activeMenu = "Dashboard" }) {
     useEffect(() => {
@@ -47,6 +56,7 @@ function NavigationBar({ activeMenu = "Dashboard" }) {
 
     return (
         <>
+            <ToastContainer />
             {/* Navigation Bar */}
             <div className="inline-flex items-center justify-between self-stretch">
                 <div className="flex gap-5 font-poppins text-xl font-bold text-zinc-800 md:text-3xl">
@@ -78,7 +88,10 @@ function NavigationBar({ activeMenu = "Dashboard" }) {
                         </div>
                     </div>
                     <div className="flex aspect-square items-center justify-center overflow-hidden rounded-full">
-                        <img
+                        <LazyLoadImage
+                            width={48}
+                            height={48}
+                            effect="blur"
                             className="h-12 w-12 rounded-full object-cover object-center"
                             src={`https://${process.env.REACT_APP_BUCKET_URL}${partnerData.logoAddress}`}
                             alt={`${partnerData.companyName} Logo`}
@@ -91,15 +104,32 @@ function NavigationBar({ activeMenu = "Dashboard" }) {
             {isMobileMenuOpen && (
                 <div className="md:hidden">
                     {/* Navigation List */}
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-wrap">
                         {navigationList.map((item) => (
-                            <Link
-                                key={item.name}
-                                to={item.link}
-                                className="text-md font-poppins font-semibold text-zinc-800"
-                            >
-                                {item.name}
-                            </Link>
+                            <div className="flex w-1/2 p-1">
+                                <Link
+                                    key={item.name}
+                                    to={item.link}
+                                    className={`flex w-full flex-col items-start gap-1 rounded-md p-2 text-sm font-semibold ${
+                                        activeMenu === item.name
+                                            ? "bg-red-orange-300 text-red-orange-950"
+                                            : "bg-red-orange-950 text-red-orange-200"
+                                    }`}
+                                >
+                                    <FontAwesomeIcon
+                                        icon={item.icon}
+                                        size="lg"
+                                        className={`
+                                            ${
+                                                activeMenu === item.name
+                                                    ? "text-red-orange-950"
+                                                    : "text-red-orange-200"
+                                            }
+                                        `}
+                                    />
+                                    {item.name}
+                                </Link>
+                            </div>
                         ))}
                     </div>
                 </div>
