@@ -58,46 +58,51 @@ function NavigationBar({ activeMenu = "Dashboard" }) {
         <>
             <ToastContainer />
             {/* Navigation Bar */}
-            <div className="inline-flex items-center justify-between self-stretch">
-                <div className="flex gap-5 font-poppins text-xl font-bold text-zinc-800 md:text-3xl">
-                    <div
-                        className="cursor-pointer font-poppins text-xl font-bold text-zinc-800 md:hidden md:text-3xl"
-                        onClick={toggleMobileMenu}
-                    >
-                        &#9776;
+            <div className="flex w-full flex-col gap-2">
+                <div className="flex items-center justify-between">
+                    <div className="flex gap-5 font-poppins text-xl font-bold text-zinc-800 md:text-3xl">
+                        <div
+                            className="cursor-pointer font-poppins text-xl font-bold text-zinc-800 md:hidden md:text-3xl"
+                            onClick={toggleMobileMenu}
+                        >
+                            &#9776;
+                        </div>
+                        <p className="hidden md:flex">{activeMenu}</p>
                     </div>
-                    {activeMenu}
-                </div>
 
-                {/* User Info */}
-                <div className="flex items-center justify-start gap-6">
-                    <div className="inline-flex flex-col items-end justify-center">
-                        <div className="font-poppins text-sm font-semibold text-red-900 md:text-lg">
-                            {partnerLoggedIn ? (
-                                <>{partnerData.companyName}</>
-                            ) : (
-                                <Skeleton />
-                            )}
+                    {/* User Info */}
+                    <div className="flex items-center justify-start gap-6">
+                        <div className="inline-flex flex-col items-end justify-center">
+                            <div className="font-poppins text-sm font-semibold text-red-900 md:text-lg">
+                                {partnerLoggedIn ? (
+                                    <>{partnerData.companyName}</>
+                                ) : (
+                                    <Skeleton />
+                                )}
+                            </div>
+                            <div className="md:font-sm font-poppins text-xs tracking-tight text-red-900">
+                                {partnerLoggedIn ? (
+                                    <>{partnerData.emailAddress}</>
+                                ) : (
+                                    <Skeleton />
+                                )}
+                            </div>
                         </div>
-                        <div className="md:font-sm hidden font-poppins text-xs tracking-tight text-red-900 md:flex">
-                            {partnerLoggedIn ? (
-                                <>{partnerData.emailAddress}</>
-                            ) : (
-                                <Skeleton />
-                            )}
+                        <div className="flex aspect-square items-center justify-center overflow-hidden rounded-full">
+                            <LazyLoadImage
+                                width={48}
+                                height={48}
+                                effect="blur"
+                                className="h-12 w-12 rounded-full object-cover object-center"
+                                src={`https://${process.env.REACT_APP_BUCKET_URL}${partnerData.logoAddress}`}
+                                alt={`${partnerData.companyName} Logo`}
+                            />
                         </div>
-                    </div>
-                    <div className="flex aspect-square items-center justify-center overflow-hidden rounded-full">
-                        <LazyLoadImage
-                            width={48}
-                            height={48}
-                            effect="blur"
-                            className="h-12 w-12 rounded-full object-cover object-center"
-                            src={`https://${process.env.REACT_APP_BUCKET_URL}${partnerData.logoAddress}`}
-                            alt={`${partnerData.companyName} Logo`}
-                        />
                     </div>
                 </div>
+                <p className="flex font-poppins text-xl font-black text-zinc-800 md:hidden">
+                    {activeMenu}
+                </p>
             </div>
 
             {/* Mobile Navigation Menu - Hidden by default */}
