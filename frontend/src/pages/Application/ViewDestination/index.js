@@ -418,9 +418,19 @@ function DestinationView() {
                         </h1>
                         <div className="flex flex-col gap-2">
                             <div className="flex items-center gap-1 text-xs font-bold text-yellow-500">
-                                <p>&#9733; 9.2 Sangat menarik</p>
+                                <p>
+                                    &#9733;{" "}
+                                    {dataLoaded ? (
+                                        destinationData.destinationAverageRating.toFixed(
+                                            2,
+                                        )
+                                    ) : (
+                                        <Skeleton />
+                                    )}
+                                </p>
                                 <p className="font-normal text-gray-600">
-                                    (dari 1000 ulasan)
+                                    (dari {dataLoaded ? reviews.length : 0}{" "}
+                                    ulasan)
                                 </p>
                             </div>
                             <h1 className="w-fit bg-red-orange-200 px-2 py-1 text-xs text-gray-700">
